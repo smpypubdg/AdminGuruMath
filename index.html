@@ -1159,7 +1159,7 @@
               <tbody>${rows}</tbody>
             </table>
 
-            <h4 style="margin-top: 20px; margin-bottom: 5px; color: #881337; font-size: 10pt;">Penjabaran Metadata Tugas (Keterangan):</h4>
+            <h4 style="margin-top: 20px; margin-bottom: 5px; color: #1e40af; font-size: 10pt;">Penjabaran Metadata Tugas (Keterangan):</h4>
             ${countMeta > 0 ? `
               <table>
                 <thead>
@@ -1172,7 +1172,7 @@
                 </thead>
                 <tbody>${metaLegendRows}</tbody>
               </table>
-            ` : '<p style="font-size: 8pt; color: #881337; italic;">Belum ada judul/metadata tugas yang ditambahkan.</p>'}
+            ` : '<p style="font-size: 8pt; color: #64748b; font-style: italic;">Belum ada judul/metadata tugas yang ditambahkan.</p>'}
           `;
         } else if (type === 'asesmen') {
           titleText = `LAPORAN NILAI ASESMEN & RAPOR`;
@@ -1246,7 +1246,7 @@
           }).sort((a, b) => a.date.localeCompare(b.date));
 
           if (filteredJournals.length === 0) {
-            bodyHTML = `<div style="text-align: center; padding: 40px; color: #881337;">Tidak ditemukan jurnal pembelajaran untuk kriteria ini.</div>`;
+            bodyHTML = `<div style="text-align: center; padding: 40px; color: #1e40af;">Tidak ditemukan jurnal pembelajaran untuk kriteria ini.</div>`;
           } else {
             bodyHTML = filteredJournals.map((j, index) => {
               const attKey = `${targetClass}_${j.date}_${j.period}_${targetSubject}`;
@@ -1277,17 +1277,17 @@
                   </div>
                   <div style="margin-bottom: 10px; font-size: 9.5pt;">
                     <strong>Uraian Kegiatan Pembelajaran:</strong><br/>
-                    <div style="background: #fff1f2; padding: 8px 12px; border-radius: 6px; border-left: 3px solid #be123c; margin-top: 4px;">
+                    <div style="background: #eff6ff; padding: 8px 12px; border-radius: 6px; border-left: 3px solid #2563eb; margin-top: 4px;">
                       ${j.content}
                     </div>
                   </div>
                   ${j.notes ? `
-                    <div style="margin-bottom: 12px; font-size: 9pt; color: #9f1239;">
+                    <div style="margin-bottom: 12px; font-size: 9pt; color: #1e40af;">
                       <strong>Catatan Khusus / Kejadian:</strong> ${j.notes}
                     </div>
                   ` : ''}
 
-                  <h5 style="margin: 12px 0 6px 0; color: #881337; font-size: 9pt;">Daftar Presensi Kehadiran Kelas (Sesi Ini):</h5>
+                  <h5 style="margin: 12px 0 6px 0; color: #1e40af; font-size: 9pt;">Daftar Presensi Kehadiran Kelas (Sesi Ini):</h5>
                   <table>
                     <thead>
                       <tr>
@@ -1465,7 +1465,7 @@
       }
 
       return (
-        <div className="min-h-screen flex flex-col font-sans text-sky-100 bg-[#0b1329] bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:16px_16px]">
+        <div className="h-screen flex flex-col font-sans text-sky-100 bg-[#0b1329] bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:16px_16px] overflow-hidden">
           {toast.show && (
             <div className="fixed top-5 right-5 z-50 animate-bounce">
               <div className={`flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-xl text-slate-50 font-medium ${
@@ -1519,58 +1519,41 @@
           {/* Modal Pop-up Cetak Dokumen */}
           {isPrintModalOpen && (
             <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-[#111c38] rounded-3xl max-w-lg w-full p-6 lg:p-7 shadow-2xl border border-[#a1c6ea]/40 space-y-6 animate-scaleUp">
-                <div className="flex items-center justify-between border-b border-blue-900/60 pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-[#090f21] text-[#a1c6ea] flex items-center justify-center border border-[#a1c6ea]/40">
-                      <Icon name="Printer" className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-extrabold text-sky-50 text-base">Cetak Dokumen Laporan</h3>
-                      <p className="text-xs text-sky-200/70">Pilih format laporan dan atur opsi filter PDF</p>
-                    </div>
-                  </div>
-                  <button onClick={() => setIsPrintModalOpen(false)} className="text-sky-300 hover:text-sky-100 p-1">
+              <div className="bg-[#111c38] rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-[#a1c6ea]/40 space-y-5 animate-scaleUp">
+                <div className="flex items-center justify-between border-b border-blue-900/60 pb-3">
+                  <h3 className="font-bold text-sky-50 text-base flex items-center gap-2">
+                    <Icon name="Printer" className="w-5 h-5 text-[#a1c6ea]" />
+                    Cetak Dokumen PDF
+                  </h3>
+                  <button onClick={() => setIsPrintModalOpen(false)} className="text-sky-300 hover:text-sky-100">
                     <Icon name="X" className="w-5 h-5" />
                   </button>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-sky-200 mb-2">Jenis Dokumen yang Dicetak *</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {[
-                        { id: 'rekap', label: '1. Rekap Presensi', desc: 'Presensi & % Kehadiran' },
-                        { id: 'harian', label: '2. Nilai & Tugas Harian', desc: 'Tugas 1-16 + Penjabaran' },
-                        { id: 'asesmen', label: '3. Nilai Asesmen', desc: 'Formatif, ATS, AAS & NA' },
-                        { id: 'jurnal', label: '4. Jurnal & Presensi', desc: 'Jurnal + Tabel Absensi' },
-                      ].map((opt) => (
-                        <button
-                          key={opt.id}
-                          type="button"
-                          onClick={() => setPrintConfig({ ...printConfig, type: opt.id })}
-                          className={`p-3 text-left rounded-2xl border transition-all ${
-                            printConfig.type === opt.id
-                              ? 'bg-[#1e3a8a] border-[#a1c6ea] text-white font-semibold shadow-md shadow-blue-950'
-                              : 'bg-[#090f21] border-blue-900/80 text-sky-200 hover:bg-[#1a294d]'
-                          }`}
-                        >
-                          <div className="text-xs font-bold">{opt.label}</div>
-                          <div className="text-[10px] text-sky-300/80 mt-0.5">{opt.desc}</div>
-                        </button>
-                      ))}
-                    </div>
+                    <label className="block text-xs font-semibold text-sky-200 mb-1">Jenis Dokumen Cetak</label>
+                    <select
+                      value={printConfig.type}
+                      onChange={(e) => setPrintConfig({ ...printConfig, type: e.target.value })}
+                      className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
+                    >
+                      <option value="rekap" className="bg-[#0b1329]">1. Rekap Presensi Siswa</option>
+                      <option value="harian" className="bg-[#0b1329]">2. Nilai & Tugas Harian</option>
+                      <option value="asesmen" className="bg-[#0b1329]">3. Nilai Asesmen & Rapor</option>
+                      <option value="jurnal" className="bg-[#0b1329]">4. Jurnal & Presensi Harian</option>
+                    </select>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3 pt-1">
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-semibold text-sky-200 mb-1">Target Kelas</label>
+                      <label className="block text-xs font-semibold text-sky-200 mb-1">Kelas Target</label>
                       <select
                         value={printConfig.classRoom}
                         onChange={(e) => setPrintConfig({ ...printConfig, classRoom: e.target.value })}
                         className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                       >
-                        {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">Kelas {c}</option>)}
+                        {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329]">{c}</option>)}
                       </select>
                     </div>
 
@@ -1581,20 +1564,20 @@
                         onChange={(e) => setPrintConfig({ ...printConfig, subject: e.target.value })}
                         className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                       >
-                        {INITIAL_SUBJECTS.map(s => <option key={s} value={s} className="bg-[#0b1329] text-sky-100">{s}</option>)}
+                        {INITIAL_SUBJECTS.map(s => <option key={s} value={s} className="bg-[#0b1329]">{s}</option>)}
                       </select>
                     </div>
                   </div>
 
                   {(printConfig.type === 'rekap' || printConfig.type === 'jurnal') && (
-                    <div className="grid grid-cols-2 gap-3 animate-fadeIn">
+                    <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-xs font-semibold text-sky-200 mb-1">Tanggal Mulai</label>
                         <input
                           type="date"
                           value={printConfig.startDate}
                           onChange={(e) => setPrintConfig({ ...printConfig, startDate: e.target.value })}
-                          className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
+                          className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                         />
                       </div>
                       <div>
@@ -1603,57 +1586,43 @@
                           type="date"
                           value={printConfig.endDate}
                           onChange={(e) => setPrintConfig({ ...printConfig, endDate: e.target.value })}
-                          className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
+                          className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                         />
                       </div>
                     </div>
                   )}
-
-                  <div className="bg-[#090f21] p-3 rounded-2xl border border-[#a1c6ea]/30 text-[11px] text-sky-200 leading-relaxed">
-                    <p className="font-semibold flex items-center gap-1.5 mb-0.5 text-[#a1c6ea]">
-                      <Icon name="Info" className="w-3.5 h-3.5 shrink-0" />
-                      Sistem Cetak PDF EduTeach:
-                    </p>
-                    Halaman pratinjau cetak resmi akan muncul secara otomatis dengan header <strong className="text-sky-300">SMP YPU Bandung</strong>.
-                  </div>
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-3 border-t border-blue-900/60">
                   <button
                     onClick={() => setIsPrintModalOpen(false)}
-                    className="px-4 py-2.5 text-xs font-semibold text-sky-300 hover:bg-[#1a294d] rounded-xl"
+                    className="px-4 py-2 text-xs font-semibold text-sky-300 hover:bg-[#1a294d] rounded-xl"
                   >
                     Batal
                   </button>
                   <button
                     onClick={() => {
+                      executePDFPrint(printConfig.type, printConfig.classRoom, printConfig.subject, printConfig.startDate, printConfig.endDate);
                       setIsPrintModalOpen(false);
-                      executePDFPrint(
-                        printConfig.type,
-                        printConfig.classRoom,
-                        printConfig.subject,
-                        printConfig.startDate,
-                        printConfig.endDate
-                      );
                     }}
-                    className="px-6 py-2.5 text-xs font-bold bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl shadow-lg shadow-blue-950 flex items-center gap-2"
+                    className="px-5 py-2 text-xs font-bold bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl shadow-md shadow-blue-950 flex items-center gap-1.5"
                   >
-                    <Icon name="Printer" className="w-4 h-4" /> Cetak ke PDF
+                    <Icon name="Printer" className="w-4 h-4" /> Cetak PDF Sekarang
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          <div className="flex flex-1 overflow-hidden">
-            {/* Sidebar */}
+          <div className="flex flex-1 min-h-0 overflow-hidden">
+            {/* Sidebar Statis */}
             <aside
-              className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#090f21] border-r border-[#a1c6ea]/20 text-sky-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col justify-between ${
+              className={`fixed inset-y-0 left-0 z-40 w-64 shrink-0 bg-[#090f21] border-r border-[#a1c6ea]/20 text-sky-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:h-full flex flex-col justify-between ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
               }`}
             >
-              <div>
-                <div className="h-20 flex items-center justify-between px-5 border-b border-[#a1c6ea]/20">
+              <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+                <div className="h-20 flex items-center justify-between px-5 border-b border-[#a1c6ea]/20 shrink-0">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-[#0b1329] border border-[#a1c6ea]/40 p-1 flex items-center justify-center shrink-0">
                       <img
@@ -1679,7 +1648,7 @@
                   </button>
                 </div>
 
-                <nav className="p-4 space-y-1.5">
+                <nav className="p-4 space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
                   <p className="px-3 text-xs font-semibold text-sky-400/80 uppercase tracking-wider mb-2">
                     Menu Utama
                   </p>
@@ -1710,7 +1679,7 @@
                 </nav>
               </div>
 
-              <div className="p-4 border-t border-[#a1c6ea]/20">
+              <div className="p-4 border-t border-[#a1c6ea]/20 shrink-0">
                 <div className="flex items-center justify-between bg-[#0b1329] p-3 rounded-xl border border-[#a1c6ea]/30">
                   <div className="flex items-center gap-3 overflow-hidden">
                     <div className="w-10 h-10 rounded-full bg-blue-900/60 border border-[#a1c6ea] text-[#a1c6ea] flex items-center justify-center font-bold text-sm shrink-0">
@@ -1736,7 +1705,7 @@
               <div onClick={() => setSidebarOpen(false)} className="fixed inset-0 z-30 bg-black/70 backdrop-blur-sm lg:hidden"></div>
             )}
 
-            <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+            <div className="flex-1 flex flex-col min-w-0 h-full overflow-y-auto">
               {/* Header */}
               <header className="sticky top-0 z-20 bg-[#090f21]/90 backdrop-blur-md border-b border-[#a1c6ea]/20 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-md">
                 <div className="flex items-center gap-3.5">
