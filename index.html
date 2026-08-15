@@ -199,18 +199,20 @@
     };
 
     const MASTER_SCHEDULE = [
-      { id: '1', day: 1, dayName: 'Senin', jam: '07.30 - 09.00', startHour: 7, startMin: 30, endHour: 9, endMin: 0, subject: 'Matematika', classRoom: 'VII-A', room: 'Ruang VII-A' },
-      { id: '2', day: 1, dayName: 'Senin', jam: '09.30 - 11.00', startHour: 9, startMin: 30, endHour: 11, endMin: 0, subject: 'Matematika', classRoom: 'VII-B', room: 'Ruang VII-B' },
-      { id: '3', day: 1, dayName: 'Senin', jam: '11.10 - 12.30', startHour: 11, startMin: 10, endHour: 12, endMin: 30, subject: 'Informatika', classRoom: 'VIII-A', room: 'Lab Komputer' },
-      { id: '4', day: 2, dayName: 'Selasa', jam: '08.00 - 09.30', startHour: 8, startMin: 0, endHour: 9, endMin: 30, subject: 'Informatika', classRoom: 'IX-A', room: 'Lab Komputer' },
-      { id: '5', day: 2, dayName: 'Selasa', jam: '10.00 - 11.30', startHour: 10, startMin: 0, endHour: 11, endMin: 30, subject: 'Informatika', classRoom: 'IX-B', room: 'Lab Komputer' },
-      { id: '6', day: 3, dayName: 'Rabu', jam: '07.30 - 09.00', startHour: 7, startMin: 30, endHour: 9, endMin: 0, subject: 'Matematika', classRoom: 'VIII-A', room: 'Ruang VIII-A' },
-      { id: '7', day: 3, dayName: 'Rabu', jam: '09.30 - 11.00', startHour: 9, startMin: 30, endHour: 11, endMin: 0, subject: 'Matematika', classRoom: 'IX-B', room: 'Ruang IX-B' },
-      { id: '8', day: 4, dayName: 'Kamis', jam: '08.00 - 09.30', startHour: 8, startMin: 0, endHour: 9, endMin: 30, subject: 'Informatika', classRoom: 'VII-A', room: 'Lab Komputer' },
-      { id: '9', day: 4, dayName: 'Kamis', jam: '10.00 - 11.30', startHour: 10, startMin: 0, endHour: 11, endMin: 30, subject: 'Informatika', classRoom: 'VII-B', room: 'Lab Komputer' },
-      { id: '10', day: 5, dayName: 'Jumat', jam: '07.30 - 08.00', startHour: 7, startMin: 30, endHour: 8, endMin: 0, subject: 'Pembinaan Wali Kelas', classRoom: 'VII-B', room: 'Ruang VII-B' },
-      { id: '11', day: 5, dayName: 'Jumat', jam: '08.00 - 09.20', startHour: 8, startMin: 0, endHour: 9, endMin: 20, subject: 'Informatika', classRoom: 'VIII-A', room: 'Lab Komputer' },
-      { id: '12', day: 5, dayName: 'Jumat', jam: '09.50 - 11.10', startHour: 9, startMin: 50, endHour: 11, endMin: 10, subject: 'Matematika', classRoom: 'IX-A', room: 'Ruang IX-A' }
+      { id: '1', day: 1, dayName: 'Senin', jam: '07.40 - 09.00', startHour: 7, startMin: 40, endHour: 9, endMin: 0, subject: 'Informatika', classRoom: 'IX-A', room: 'Lab Komputer' },
+      { id: '2', day: 1, dayName: 'Senin', jam: '10.20 - 11.40', startHour: 10, startMin: 20, endHour: 11, endMin: 40, subject: 'Matematika', classRoom: 'VII-B', room: 'Ruang VII-B' },
+      { id: '3', day: 1, dayName: 'Senin', jam: '12.30 - 13.30', startHour: 12, startMin: 30, endHour: 13, endMin: 30, subject: 'Matematika', classRoom: 'VII-A', room: 'Ruang VII-A' },
+      { id: '4', day: 2, dayName: 'Selasa', jam: '10.20 - 11.40', startHour: 10, startMin: 20, endHour: 11, endMin: 40, subject: 'Matematika', classRoom: 'IX-B', room: 'Ruang IX-B' },
+      { id: '5', day: 2, dayName: 'Selasa', jam: '12.30 - 13.30', startHour: 12, startMin: 30, endHour: 13, endMin: 30, subject: 'Matematika', classRoom: 'VIII-A', room: 'Ruang VIII-A' },
+      { id: '6', day: 3, dayName: 'Rabu', jam: '07.40 - 09.00', startHour: 7, startMin: 40, endHour: 9, endMin: 0, subject: 'Matematika', classRoom: 'IX-A', room: 'Ruang IX-A' },
+      { id: '7', day: 3, dayName: 'Rabu', jam: '09.40 - 11.00', startHour: 9, startMin: 40, endHour: 11, endMin: 0, subject: 'Matematika', classRoom: 'VIII-A', room: 'Ruang VIII-A' },
+      { id: '8', day: 3, dayName: 'Rabu', jam: '12.30 - 13.30', startHour: 12, startMin: 30, endHour: 13, endMin: 30, subject: 'Matematika', classRoom: 'IX-B', room: 'Ruang IX-B' },
+      { id: '9', day: 4, dayName: 'Kamis', jam: '07.40 - 09.00', startHour: 7, startMin: 40, endHour: 9, endMin: 0, subject: 'Informatika', classRoom: 'IX-B', room: 'Lab Komputer' },
+      { id: '10', day: 4, dayName: 'Kamis', jam: '10.20 - 11.40', startHour: 10, startMin: 20, endHour: 11, endMin: 40, subject: 'Matematika', classRoom: 'VII-B', room: 'Ruang VII-B' },
+      { id: '11', day: 4, dayName: 'Kamis', jam: '12.30 - 13.30', startHour: 12, startMin: 30, endHour: 13, endMin: 30, subject: 'Matematika', classRoom: 'VII-A', room: 'Ruang VII-A' },
+      { id: '12', day: 5, dayName: 'Jumat', jam: '07.30 - 08.00', startHour: 7, startMin: 30, endHour: 8, endMin: 0, subject: 'Pembinaan Wali Kelas', classRoom: 'VII-B', room: 'Ruang VII-B' },
+      { id: '13', day: 5, dayName: 'Jumat', jam: '08.00 - 09.20', startHour: 8, startMin: 0, endHour: 9, endMin: 20, subject: 'Informatika', classRoom: 'VIII-A', room: 'Lab Komputer' },
+      { id: '14', day: 5, dayName: 'Jumat', jam: '09.50 - 11.10', startHour: 9, startMin: 50, endHour: 11, endMin: 10, subject: 'Matematika', classRoom: 'IX-A', room: 'Ruang IX-A' }
     ];
 
     const INITIAL_STUDENTS_DATA = {
@@ -548,9 +550,9 @@
 
       const initialTodayDateISO = new Date().toISOString().split('T')[0];
       const [selectedDate, setSelectedDate] = useState(initialTodayDateISO);
-      const [selectedClass, setSelectedClass] = useState('VII-A');
-      const [selectedSubject, setSelectedSubject] = useState('Matematika');
-      const [selectedPeriod, setSelectedPeriod] = useState('07.30 - 09.00');
+      const [selectedClass, setSelectedClass] = useState('IX-A');
+      const [selectedSubject, setSelectedSubject] = useState('Informatika');
+      const [selectedPeriod, setSelectedPeriod] = useState('07.40 - 09.00');
 
       const formattedTimeString = useMemo(() => {
         return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
