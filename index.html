@@ -8,6 +8,11 @@
   <!-- Favicon Link -->
   <link rel="icon" type="image/png" href="https://i.ibb.co.com/7dMfX9yN/logo.png">
   
+  <!-- Quicksand Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
@@ -19,6 +24,9 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
+    body {
+      font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
@@ -30,7 +38,7 @@
     .animate-fadeIn { animation: fadeIn 0.25s ease-out forwards; }
     .animate-scaleUp { animation: scaleUp 0.2s ease-out forwards; }
 
-    /* Custom Scrollbar Styling */
+    /* Custom Scrollbar Styling - Blue Theme (#a1c6ea) */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -38,9 +46,24 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b1329;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a1c6ea;
+    }
   </style>
 </head>
-<body class="bg-[#edf5ff] text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
+<body class="bg-[#0b1329] text-sky-100 antialiased selection:bg-[#a1c6ea] selection:text-[#0b1329]">
   <div id="root"></div>
 
   <script type="module">
@@ -64,7 +87,7 @@
   <script type="text/babel">
     const { useState, useMemo, useEffect, useRef } = React;
 
-    const SESSION_DURATION_DAYS = 7; // Session remains active for 7 days without requiring re-login
+    const SESSION_DURATION_DAYS = 7;
     const SESSION_DURATION_MS = SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000;
 
     const Icon = ({ name, className = "w-5 h-5", onClick, title }) => {
@@ -152,6 +175,8 @@
         id: 1,
         date: new Date().toISOString().split('T')[0],
         classRoom: 'VIII-A',
+        startTime: '08.00',
+        endTime: '09.20',
         period: '08.00 - 09.20',
         subject: 'Informatika',
         content: 'Pengenalan Algoritma Dasar dan Logika Pemrograman. Praktik di Laboratorium Komputer.',
@@ -167,169 +192,25 @@
     };
 
     const getSubjectBadgeStyle = (subject) => {
-      if (subject === 'Informatika') return { bg: 'bg-purple-100 text-purple-800 border-purple-200', iconBg: 'bg-purple-600 text-white' };
-      if (subject === 'Matematika') return { bg: 'bg-sky-100 text-sky-800 border-sky-200', iconBg: 'bg-sky-600 text-white' };
-      if (subject === 'Pembinaan Wali Kelas') return { bg: 'bg-amber-100 text-amber-800 border-amber-200', iconBg: 'bg-amber-600 text-white' };
-      return { bg: 'bg-blue-100 text-blue-800 border-blue-200', iconBg: 'bg-blue-600 text-white' };
+      if (subject === 'Informatika') return { bg: 'bg-[#11254a] text-[#a1c6ea] border-blue-700/60', iconBg: 'bg-blue-600 text-slate-50' };
+      if (subject === 'Matematika') return { bg: 'bg-[#0f1d3a] text-sky-200 border-sky-800/60', iconBg: 'bg-sky-700 text-sky-50' };
+      if (subject === 'Pembinaan Wali Kelas') return { bg: 'bg-amber-950/80 text-amber-300 border-amber-800/60', iconBg: 'bg-amber-700 text-amber-50' };
+      return { bg: 'bg-[#11254a] text-[#a1c6ea] border-blue-700/60', iconBg: 'bg-blue-600 text-slate-50' };
     };
 
     const MASTER_SCHEDULE = [
-      {
-        id: '1',
-        day: 1,
-        dayName: 'Senin',
-        jam: '07.30 - 09.00',
-        startHour: 7,
-        startMin: 30,
-        endHour: 9,
-        endMin: 0,
-        subject: 'Matematika',
-        classRoom: 'VII-A',
-        room: 'Ruang VII-A'
-      },
-      {
-        id: '2',
-        day: 1,
-        dayName: 'Senin',
-        jam: '09.30 - 11.00',
-        startHour: 9,
-        startMin: 30,
-        endHour: 11,
-        endMin: 0,
-        subject: 'Matematika',
-        classRoom: 'VII-B',
-        room: 'Ruang VII-B'
-      },
-      {
-        id: '3',
-        day: 1,
-        dayName: 'Senin',
-        jam: '11.10 - 12.30',
-        startHour: 11,
-        startMin: 10,
-        endHour: 12,
-        endMin: 30,
-        subject: 'Informatika',
-        classRoom: 'VIII-A',
-        room: 'Lab Komputer'
-      },
-      {
-        id: '4',
-        day: 2,
-        dayName: 'Selasa',
-        jam: '08.00 - 09.30',
-        startHour: 8,
-        startMin: 0,
-        endHour: 9,
-        endMin: 30,
-        subject: 'Informatika',
-        classRoom: 'IX-A',
-        room: 'Lab Komputer'
-      },
-      {
-        id: '5',
-        day: 2,
-        dayName: 'Selasa',
-        jam: '10.00 - 11.30',
-        startHour: 10,
-        startMin: 0,
-        endHour: 11,
-        endMin: 30,
-        subject: 'Informatika',
-        classRoom: 'IX-B',
-        room: 'Lab Komputer'
-      },
-      {
-        id: '6',
-        day: 3,
-        dayName: 'Rabu',
-        jam: '07.30 - 09.00',
-        startHour: 7,
-        startMin: 30,
-        endHour: 9,
-        endMin: 0,
-        subject: 'Matematika',
-        classRoom: 'VIII-A',
-        room: 'Ruang VIII-A'
-      },
-      {
-        id: '7',
-        day: 3,
-        dayName: 'Rabu',
-        jam: '09.30 - 11.00',
-        startHour: 9,
-        startMin: 30,
-        endHour: 11,
-        endMin: 0,
-        subject: 'Matematika',
-        classRoom: 'IX-B',
-        room: 'Ruang IX-B'
-      },
-      {
-        id: '8',
-        day: 4,
-        dayName: 'Kamis',
-        jam: '08.00 - 09.30',
-        startHour: 8,
-        startMin: 0,
-        endHour: 9,
-        endMin: 30,
-        subject: 'Informatika',
-        classRoom: 'VII-A',
-        room: 'Lab Komputer'
-      },
-      {
-        id: '9',
-        day: 4,
-        dayName: 'Kamis',
-        jam: '10.00 - 11.30',
-        startHour: 10,
-        startMin: 0,
-        endHour: 11,
-        endMin: 30,
-        subject: 'Informatika',
-        classRoom: 'VII-B',
-        room: 'Lab Komputer'
-      },
-      {
-        id: '10',
-        day: 5,
-        dayName: 'Jumat',
-        jam: '07.30 - 08.00',
-        startHour: 7,
-        startMin: 30,
-        endHour: 8,
-        endMin: 0,
-        subject: 'Pembinaan Wali Kelas',
-        classRoom: 'VII-B',
-        room: 'Ruang VII-B'
-      },
-      {
-        id: '11',
-        day: 5,
-        dayName: 'Jumat',
-        jam: '08.00 - 09.20',
-        startHour: 8,
-        startMin: 0,
-        endHour: 9,
-        endMin: 20,
-        subject: 'Informatika',
-        classRoom: 'VIII-A',
-        room: 'Lab Komputer'
-      },
-      {
-        id: '12',
-        day: 5,
-        dayName: 'Jumat',
-        jam: '09.50 - 11.10',
-        startHour: 9,
-        startMin: 50,
-        endHour: 11,
-        endMin: 10,
-        subject: 'Matematika',
-        classRoom: 'IX-A',
-        room: 'Ruang IX-A'
-      }
+      { id: '1', day: 1, dayName: 'Senin', jam: '07.30 - 09.00', startHour: 7, startMin: 30, endHour: 9, endMin: 0, subject: 'Matematika', classRoom: 'VII-A', room: 'Ruang VII-A' },
+      { id: '2', day: 1, dayName: 'Senin', jam: '09.30 - 11.00', startHour: 9, startMin: 30, endHour: 11, endMin: 0, subject: 'Matematika', classRoom: 'VII-B', room: 'Ruang VII-B' },
+      { id: '3', day: 1, dayName: 'Senin', jam: '11.10 - 12.30', startHour: 11, startMin: 10, endHour: 12, endMin: 30, subject: 'Informatika', classRoom: 'VIII-A', room: 'Lab Komputer' },
+      { id: '4', day: 2, dayName: 'Selasa', jam: '08.00 - 09.30', startHour: 8, startMin: 0, endHour: 9, endMin: 30, subject: 'Informatika', classRoom: 'IX-A', room: 'Lab Komputer' },
+      { id: '5', day: 2, dayName: 'Selasa', jam: '10.00 - 11.30', startHour: 10, startMin: 0, endHour: 11, endMin: 30, subject: 'Informatika', classRoom: 'IX-B', room: 'Lab Komputer' },
+      { id: '6', day: 3, dayName: 'Rabu', jam: '07.30 - 09.00', startHour: 7, startMin: 30, endHour: 9, endMin: 0, subject: 'Matematika', classRoom: 'VIII-A', room: 'Ruang VIII-A' },
+      { id: '7', day: 3, dayName: 'Rabu', jam: '09.30 - 11.00', startHour: 9, startMin: 30, endHour: 11, endMin: 0, subject: 'Matematika', classRoom: 'IX-B', room: 'Ruang IX-B' },
+      { id: '8', day: 4, dayName: 'Kamis', jam: '08.00 - 09.30', startHour: 8, startMin: 0, endHour: 9, endMin: 30, subject: 'Informatika', classRoom: 'VII-A', room: 'Lab Komputer' },
+      { id: '9', day: 4, dayName: 'Kamis', jam: '10.00 - 11.30', startHour: 10, startMin: 0, endHour: 11, endMin: 30, subject: 'Informatika', classRoom: 'VII-B', room: 'Lab Komputer' },
+      { id: '10', day: 5, dayName: 'Jumat', jam: '07.30 - 08.00', startHour: 7, startMin: 30, endHour: 8, endMin: 0, subject: 'Pembinaan Wali Kelas', classRoom: 'VII-B', room: 'Ruang VII-B' },
+      { id: '11', day: 5, dayName: 'Jumat', jam: '08.00 - 09.20', startHour: 8, startMin: 0, endHour: 9, endMin: 20, subject: 'Informatika', classRoom: 'VIII-A', room: 'Lab Komputer' },
+      { id: '12', day: 5, dayName: 'Jumat', jam: '09.50 - 11.10', startHour: 9, startMin: 50, endHour: 11, endMin: 10, subject: 'Matematika', classRoom: 'IX-A', room: 'Ruang IX-A' }
     ];
 
     const INITIAL_STUDENTS_DATA = {
@@ -488,7 +369,6 @@
         return () => clearInterval(timer);
       }, []);
 
-      // Check persistent session stored in localStorage (valid for 7 days)
       const [isLoggedIn, setIsLoggedIn] = useState(() => {
         const auth = localStorage.getItem('eduteach_pro_auth');
         const loginTimeStr = localStorage.getItem('eduteach_pro_login_time');
@@ -499,13 +379,12 @@
             if (Date.now() - loginTime < SESSION_DURATION_MS) {
               return true;
             } else {
-              // Expired session cleanup
               localStorage.removeItem('eduteach_pro_auth');
               localStorage.removeItem('eduteach_pro_login_time');
               return false;
             }
           }
-          return true; // Fallback for active session
+          return true;
         }
         return false;
       });
@@ -515,7 +394,6 @@
       const [loginError, setLoginError] = useState('');
       const [showPassword, setShowPassword] = useState(false);
 
-      // Custom Confirmation Modal state (Replaces window.confirm)
       const [confirmModal, setConfirmModal] = useState({
         open: false,
         title: '',
@@ -572,7 +450,6 @@
       const [assessmentGrades, setAssessmentGrades] = useState(() => getInitialData('assessmentGrades', {}));
       const [journals, setJournals] = useState(() => getInitialData('journals', DEFAULT_JOURNALS));
 
-      // Rentang waktu filter untuk Rekap Absensi
       const [rekapStartDate, setRekapStartDate] = useState(() => {
         const d = new Date();
         d.setMonth(d.getMonth() - 1);
@@ -580,10 +457,9 @@
       });
       const [rekapEndDate, setRekapEndDate] = useState(() => new Date().toISOString().split('T')[0]);
 
-      // State Pop-up Modal Cetak
       const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
       const [printConfig, setPrintConfig] = useState({
-        type: 'rekap', // 'rekap' | 'harian' | 'asesmen' | 'jurnal'
+        type: 'rekap',
         classRoom: 'VII-A',
         subject: 'Matematika',
         startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0],
@@ -1026,7 +902,15 @@
       };
 
       const [journalForm, setJournalForm] = useState({
-        id: null, classRoom: selectedClass, period: selectedPeriod, subject: selectedSubject, date: selectedDate, content: '', notes: ''
+        id: null,
+        classRoom: selectedClass,
+        startTime: '08.00',
+        endTime: '09.20',
+        period: '08.00 - 09.20',
+        subject: selectedSubject,
+        date: selectedDate,
+        content: '',
+        notes: ''
       });
 
       const handleSaveJournal = (e) => {
@@ -1036,24 +920,46 @@
           return;
         }
 
+        const start = journalForm.startTime ? journalForm.startTime.trim() : '08.00';
+        const end = journalForm.endTime ? journalForm.endTime.trim() : '09.20';
+        const formattedPeriod = `${start} - ${end}`;
+
+        const journalToSave = {
+          ...journalForm,
+          period: formattedPeriod
+        };
+
         let updated;
         if (journalForm.id) {
-          updated = journals.map(j => j.id === journalForm.id ? { ...journalForm } : j);
+          updated = journals.map(j => j.id === journalForm.id ? { ...journalToSave } : j);
           showToast('Jurnal berhasil diperbarui!');
         } else {
-          updated = [{ ...journalForm, id: Date.now() }, ...journals];
+          updated = [{ ...journalToSave, id: Date.now() }, ...journals];
           showToast('Jurnal pembelajaran disimpan!');
         }
 
         setJournals(updated);
         saveStateToCloud({ journals: updated });
         setJournalForm({
-          id: null, classRoom: selectedClass, period: selectedPeriod, subject: selectedSubject, date: selectedDate, content: '', notes: ''
+          id: null,
+          classRoom: selectedClass,
+          startTime: '08.00',
+          endTime: '09.20',
+          period: `${selectedPeriod}`,
+          subject: selectedSubject,
+          date: selectedDate,
+          content: '',
+          notes: ''
         });
       };
 
       const handleEditJournal = (journal) => {
-        setJournalForm({ ...journal });
+        const parts = journal.period ? journal.period.split(' - ') : ['08.00', '09.20'];
+        setJournalForm({
+          ...journal,
+          startTime: parts[0] || '08.00',
+          endTime: parts[1] || '09.20'
+        });
         window.scrollTo({ top: 0, behavior: 'smooth' });
       };
 
@@ -1087,23 +993,22 @@
         let titleText = '';
         let bodyHTML = '';
 
-        // Shared Print Styles
         const printStyles = `
           <style>
             @page { size: A4 ${pageOrientation}; margin: 12mm 10mm 12mm 10mm; }
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e293b; margin: 0; padding: 0; font-size: 11pt; line-height: 1.4; }
-            .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #0284c7; padding-bottom: 12px; margin-bottom: 20px; }
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #1e293b; margin: 0; padding: 0; font-size: 11pt; line-height: 1.4; background-color: #ffffff; }
+            .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #1d4ed8; padding-bottom: 12px; margin-bottom: 20px; }
             .header-logo { display: flex; align-items: center; gap: 12px; }
             .header-logo img { height: 50px; width: auto; }
-            .header-title h1 { font-size: 16pt; margin: 0; color: #0f172a; font-weight: bold; }
-            .header-title p { font-size: 9pt; margin: 2px 0 0 0; color: #0284c7; font-weight: 600; }
+            .header-title h1 { font-size: 16pt; margin: 0; color: #1e40af; font-weight: bold; }
+            .header-title p { font-size: 9pt; margin: 2px 0 0 0; color: #2563eb; font-weight: 600; }
             .header-title span { font-size: 8pt; color: #64748b; }
-            .meta-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; font-size: 9pt; }
+            .meta-box { background: #eff6ff; border: 1px solid #a1c6ea; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; font-size: 9pt; }
             .meta-item { margin: 2px 10px 2px 0; }
-            .meta-item strong { color: #0f172a; }
+            .meta-item strong { color: #1e40af; }
             table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 15px; font-size: 9pt; }
             th, td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; }
-            th { background-color: #f1f5f9; color: #1e293b; font-weight: bold; text-align: center; }
+            th { background-color: #dbeafe; color: #1e40af; font-weight: bold; text-align: center; }
             .text-center { text-align: center; }
             .text-right { text-align: right; }
             .font-mono { font-family: monospace; }
@@ -1111,9 +1016,8 @@
             .badge-green { background: #dcfce7; color: #166534; }
             .badge-red { background: #fee2e2; color: #991b1b; }
             .badge-blue { background: #e0f2fe; color: #075985; }
-            .journal-card { border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; margin-bottom: 20px; page-break-inside: avoid; background: #fff; }
-            .journal-title { font-weight: bold; color: #0369a1; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 8px; font-size: 10pt; display: flex; justify-content: space-between; }
-            .watermark-footer { margin-top: 40px; border-top: 1px solid #cbd5e1; pt: 8px; display: flex; justify-content: space-between; font-size: 8pt; color: #94a3b8; font-style: italic; }
+            .journal-card { border: 1px solid #a1c6ea; border-radius: 8px; padding: 12px; margin-bottom: 20px; page-break-inside: avoid; background: #fff; }
+            .journal-title { font-weight: bold; color: #1e40af; border-bottom: 1px solid #dbeafe; padding-bottom: 6px; margin-bottom: 8px; font-size: 10pt; display: flex; justify-content: space-between; }
             .signature-block { margin-top: 30px; display: flex; justify-content: space-between; page-break-inside: avoid; font-size: 9pt; }
             .sig-box { text-align: center; width: 200px; }
           </style>
@@ -1255,7 +1159,7 @@
               <tbody>${rows}</tbody>
             </table>
 
-            <h4 style="margin-top: 20px; margin-bottom: 5px; color: #0f172a; font-size: 10pt;">Penjabaran Metadata Tugas (Keterangan):</h4>
+            <h4 style="margin-top: 20px; margin-bottom: 5px; color: #881337; font-size: 10pt;">Penjabaran Metadata Tugas (Keterangan):</h4>
             ${countMeta > 0 ? `
               <table>
                 <thead>
@@ -1268,7 +1172,7 @@
                 </thead>
                 <tbody>${metaLegendRows}</tbody>
               </table>
-            ` : '<p style="font-size: 8pt; color: #64748b; italic;">Belum ada judul/metadata tugas yang ditambahkan.</p>'}
+            ` : '<p style="font-size: 8pt; color: #881337; italic;">Belum ada judul/metadata tugas yang ditambahkan.</p>'}
           `;
         } else if (type === 'asesmen') {
           titleText = `LAPORAN NILAI ASESMEN & RAPOR`;
@@ -1332,7 +1236,7 @@
             </table>
           `;
         } else if (type === 'jurnal') {
-          titleText = `LAPORAN JURNAL MENGARAH & ABSENSI HARIAN`;
+          titleText = `LAPORAN JURNAL MENGAJAR & ABSENSI HARIAN`;
 
           const filteredJournals = journals.filter(j => {
             const isCls = j.classRoom === targetClass;
@@ -1342,7 +1246,7 @@
           }).sort((a, b) => a.date.localeCompare(b.date));
 
           if (filteredJournals.length === 0) {
-            bodyHTML = `<div style="text-align: center; padding: 40px; color: #64748b;">Tidak ditemukan jurnal pembelajaran untuk kriteria ini.</div>`;
+            bodyHTML = `<div style="text-align: center; padding: 40px; color: #881337;">Tidak ditemukan jurnal pembelajaran untuk kriteria ini.</div>`;
           } else {
             bodyHTML = filteredJournals.map((j, index) => {
               const attKey = `${targetClass}_${j.date}_${j.period}_${targetSubject}`;
@@ -1373,17 +1277,17 @@
                   </div>
                   <div style="margin-bottom: 10px; font-size: 9.5pt;">
                     <strong>Uraian Kegiatan Pembelajaran:</strong><br/>
-                    <div style="background: #f8fafc; padding: 8px 12px; border-radius: 6px; border-left: 3px solid #0284c7; margin-top: 4px;">
+                    <div style="background: #fff1f2; padding: 8px 12px; border-radius: 6px; border-left: 3px solid #be123c; margin-top: 4px;">
                       ${j.content}
                     </div>
                   </div>
                   ${j.notes ? `
-                    <div style="margin-bottom: 12px; font-size: 9pt; color: #b45309;">
+                    <div style="margin-bottom: 12px; font-size: 9pt; color: #9f1239;">
                       <strong>Catatan Khusus / Kejadian:</strong> ${j.notes}
                     </div>
                   ` : ''}
 
-                  <h5 style="margin: 12px 0 6px 0; color: #1e293b; font-size: 9pt;">Daftar Presensi Kehadiran Kelas (Sesi Ini):</h5>
+                  <h5 style="margin: 12px 0 6px 0; color: #881337; font-size: 9pt;">Daftar Presensi Kehadiran Kelas (Sesi Ini):</h5>
                   <table>
                     <thead>
                       <tr>
@@ -1408,7 +1312,7 @@
             <title>${titleText} - ${targetClass}</title>
             ${printStyles}
           </head>
-          <body>
+          <body onload="setTimeout(function(){ window.print(); }, 500);">
             <div class="header">
               <div class="header-logo">
                 <img src="${HEADER_LOGO_URL}" alt="Logo EduTeach" />
@@ -1418,14 +1322,14 @@
                   <span>Mata Pelajaran: Matematika & Informatika | SMP YPU Bandung</span>
                 </div>
               </div>
-              <div class="text-right" style="font-size: 8.5pt; color: #475569;">
+              <div class="text-right" style="font-size: 8.5pt; color: #1e40af;">
                 <strong>DOKUMEN RESMI GURU</strong><br/>
                 Dicetak: ${currentDateStr}<br/>
                 Oleh: Ihsan M. Syahid, S.Pd.
               </div>
             </div>
 
-            <h3 style="text-align: center; margin-top: 0; margin-bottom: 15px; color: #0f172a; text-transform: uppercase; font-size: 13pt; letter-spacing: 0.5px;">
+            <h3 style="text-align: center; margin-top: 0; margin-bottom: 15px; color: #1e40af; text-transform: uppercase; font-size: 13pt; letter-spacing: 0.5px;">
               ${titleText}
             </h3>
 
@@ -1445,14 +1349,6 @@
                 <strong>Ihsan M. Syahid, S.Pd.</strong>
               </div>
             </div>
-
-            <script>
-              window.onload = function() {
-                setTimeout(function() {
-                  window.print();
-                }, 400);
-              }
-            <\/script>
           </body>
           </html>
         `;
@@ -1474,11 +1370,11 @@
 
       if (!isLoggedIn) {
         return (
-          <div className="min-h-screen flex items-center justify-center p-4 font-sans text-slate-800 bg-[#edf5ff] bg-[radial-gradient(#d0e3ff_1px,transparent_1px)] [background-size:16px_16px]">
+          <div className="min-h-screen flex items-center justify-center p-4 font-sans text-sky-100 bg-[#0b1329] bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:16px_16px]">
             {toast.show && (
               <div className="fixed top-5 right-5 z-50 animate-bounce">
-                <div className={`flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-xl text-white font-medium ${
-                  toast.type === 'error' ? 'bg-rose-500' : toast.type === 'info' ? 'bg-sky-500' : 'bg-emerald-600'
+                <div className={`flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-xl text-slate-50 font-medium ${
+                  toast.type === 'error' ? 'bg-rose-700' : toast.type === 'info' ? 'bg-sky-700' : 'bg-blue-600'
                 }`}>
                   <Icon name="CheckCircle2" className="w-5 h-5" />
                   <span>{toast.message}</span>
@@ -1486,69 +1382,69 @@
               </div>
             )}
 
-            <div className="max-w-md w-full bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl shadow-sky-500/10 border border-sky-100 space-y-6 animate-scaleUp">
+            <div className="max-w-md w-full bg-[#111c38] rounded-3xl p-8 shadow-2xl shadow-blue-950/80 border border-[#a1c6ea]/30 space-y-6 animate-scaleUp">
               <div className="text-center space-y-3">
-                <div className="w-16 h-16 rounded-2xl bg-sky-50 border border-sky-200 p-2 mx-auto flex items-center justify-center shadow-md shadow-sky-500/10">
+                <div className="w-16 h-16 rounded-2xl bg-[#0b1329] border border-[#a1c6ea]/40 p-2 mx-auto flex items-center justify-center shadow-lg shadow-blue-950">
                   <img
                     src={HEADER_LOGO_URL}
                     alt="Logo EduTeach"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "https://placehold.co/80x80/0284c7/ffffff?text=Edu";
+                      e.target.src = "https://placehold.co/80x80/2563eb/ffffff?text=Edu";
                     }}
                     className="w-full h-full object-contain rounded-xl"
                   />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-black text-slate-900 tracking-tight">EduTeach Pro</h1>
-                  <p className="text-xs font-semibold text-sky-600 uppercase tracking-wider mt-0.5">
-                    Dashboard Guru
+                  <h1 className="text-2xl font-black text-[#a1c6ea] tracking-tight">EduTeach Pro</h1>
+                  <p className="text-xs font-semibold text-sky-300 uppercase tracking-wider mt-0.5">
+                    Dashboard Guru • SMP YPU Bandung
                   </p>
                 </div>
-                <p className="text-xs text-slate-500 max-w-xs mx-auto">
+                <p className="text-xs text-sky-200/80 max-w-xs mx-auto">
                   Sistem Informasi Administrasi Mengajar Terpadu. Silakan masuk dengan akun guru Anda.
                 </p>
               </div>
 
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 {loginError && (
-                  <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 text-xs rounded-xl flex items-center gap-2 font-medium">
-                    <Icon name="AlertCircle" className="w-4 h-4 text-rose-600 shrink-0" />
+                  <div className="p-3.5 bg-rose-950/80 border border-rose-800 text-rose-200 text-xs rounded-xl flex items-center gap-2 font-medium">
+                    <Icon name="AlertCircle" className="w-4 h-4 text-rose-400 shrink-0" />
                     <span>{loginError}</span>
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">Username / Email Guru</label>
+                  <label className="block text-xs font-semibold text-sky-200 mb-1.5">Username / Email Guru</label>
                   <div className="relative">
-                    <Icon name="Mail" className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                    <Icon name="Mail" className="w-4 h-4 text-[#a1c6ea] absolute left-3.5 top-3" />
                     <input
                       type="text"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       placeholder="ihsansyahid31@guru.smp.belajar.id"
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 placeholder-sky-400/50 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">Password</label>
+                  <label className="block text-xs font-semibold text-sky-200 mb-1.5">Password</label>
                   <div className="relative">
-                    <Icon name="Lock" className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                    <Icon name="Lock" className="w-4 h-4 text-[#a1c6ea] absolute left-3.5 top-3" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       placeholder="Masukkan kata sandi..."
-                      className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full pl-10 pr-10 py-2.5 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 placeholder-sky-400/50 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 p-0.5"
+                      className="absolute right-3 top-2.5 text-sky-300 hover:text-sky-100 p-0.5"
                     >
                       <Icon name={showPassword ? 'EyeOff' : 'Eye'} className="w-4 h-4" />
                     </button>
@@ -1557,7 +1453,7 @@
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs rounded-xl shadow-lg shadow-sky-500/30 flex items-center justify-center gap-2 mt-2"
+                  className="w-full py-3 bg-[#a1c6ea] hover:bg-[#8bb7e2] text-[#0b1329] font-bold text-xs rounded-xl shadow-lg shadow-blue-950 flex items-center justify-center gap-2 mt-2 transition-all"
                 >
                   <Icon name="UserCheck" className="w-4 h-4" />
                   Masuk ke Dashboard
@@ -1569,11 +1465,11 @@
       }
 
       return (
-        <div className="min-h-screen flex flex-col font-sans text-slate-800 bg-[#edf5ff] bg-[radial-gradient(#d0e3ff_1px,transparent_1px)] [background-size:16px_16px]">
+        <div className="min-h-screen flex flex-col font-sans text-sky-100 bg-[#0b1329] bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:16px_16px]">
           {toast.show && (
             <div className="fixed top-5 right-5 z-50 animate-bounce">
-              <div className={`flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-xl text-white font-medium ${
-                toast.type === 'error' ? 'bg-rose-500' : toast.type === 'info' ? 'bg-sky-500' : 'bg-emerald-600'
+              <div className={`flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-xl text-slate-50 font-medium ${
+                toast.type === 'error' ? 'bg-rose-700' : toast.type === 'info' ? 'bg-sky-700' : 'bg-blue-600'
               }`}>
                 <Icon name="CheckCircle2" className="w-5 h-5" />
                 <span>{toast.message}</span>
@@ -1581,28 +1477,28 @@
             </div>
           )}
 
-          {}
+          {/* Confirm Modal */}
           {confirmModal.open && (
-            <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 animate-scaleUp">
-                <div className="flex items-center gap-3 text-rose-600">
-                  <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center shrink-0 border border-rose-200">
+            <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-[#111c38] rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-[#a1c6ea]/40 space-y-4 animate-scaleUp">
+                <div className="flex items-center gap-3 text-[#a1c6ea]">
+                  <div className="w-10 h-10 rounded-xl bg-[#090f21] flex items-center justify-center shrink-0 border border-[#a1c6ea]/30">
                     <Icon name="AlertCircle" className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-base">{confirmModal.title}</h3>
-                    <p className="text-xs text-slate-500">Konfirmasi tindakan ini</p>
+                    <h3 className="font-bold text-sky-50 text-base">{confirmModal.title}</h3>
+                    <p className="text-xs text-sky-200/70">Konfirmasi tindakan ini</p>
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <p className="text-xs text-sky-200 leading-relaxed bg-[#090f21] p-3 rounded-xl border border-[#a1c6ea]/20">
                   {confirmModal.message}
                 </p>
 
                 <div className="flex items-center justify-end gap-3 pt-2">
                   <button
                     onClick={closeConfirmation}
-                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+                    className="px-4 py-2 text-xs font-semibold text-sky-300 hover:bg-[#1a294d] rounded-xl transition-colors"
                   >
                     Batal
                   </button>
@@ -1611,7 +1507,7 @@
                       if (confirmModal.onConfirm) confirmModal.onConfirm();
                       closeConfirmation();
                     }}
-                    className="px-5 py-2 text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-md shadow-rose-600/30 transition-colors"
+                    className="px-5 py-2 text-xs font-bold bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl shadow-md shadow-blue-950 transition-colors"
                   >
                     Ya, Lanjutkan
                   </button>
@@ -1620,28 +1516,28 @@
             </div>
           )}
 
-          {}
+          {/* Modal Pop-up Cetak Dokumen */}
           {isPrintModalOpen && (
-            <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-white rounded-3xl max-w-lg w-full p-6 lg:p-7 shadow-2xl space-y-6 animate-scaleUp">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-[#111c38] rounded-3xl max-w-lg w-full p-6 lg:p-7 shadow-2xl border border-[#a1c6ea]/40 space-y-6 animate-scaleUp">
+                <div className="flex items-center justify-between border-b border-blue-900/60 pb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center border border-sky-100">
+                    <div className="w-10 h-10 rounded-2xl bg-[#090f21] text-[#a1c6ea] flex items-center justify-center border border-[#a1c6ea]/40">
                       <Icon name="Printer" className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="font-extrabold text-slate-900 text-base">Cetak Dokumen Laporan</h3>
-                      <p className="text-xs text-slate-500">Pilih format laporan dan atur opsi filter PDF</p>
+                      <h3 className="font-extrabold text-sky-50 text-base">Cetak Dokumen Laporan</h3>
+                      <p className="text-xs text-sky-200/70">Pilih format laporan dan atur opsi filter PDF</p>
                     </div>
                   </div>
-                  <button onClick={() => setIsPrintModalOpen(false)} className="text-slate-400 hover:text-slate-600 p-1">
+                  <button onClick={() => setIsPrintModalOpen(false)} className="text-sky-300 hover:text-sky-100 p-1">
                     <Icon name="X" className="w-5 h-5" />
                   </button>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-2">Jenis Dokumen yang Dicetak *</label>
+                    <label className="block text-xs font-bold text-sky-200 mb-2">Jenis Dokumen yang Dicetak *</label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       {[
                         { id: 'rekap', label: '1. Rekap Presensi', desc: 'Presensi & % Kehadiran' },
@@ -1655,12 +1551,12 @@
                           onClick={() => setPrintConfig({ ...printConfig, type: opt.id })}
                           className={`p-3 text-left rounded-2xl border transition-all ${
                             printConfig.type === opt.id
-                              ? 'bg-sky-50 border-sky-500 text-sky-950 font-semibold shadow-sm'
-                              : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                              ? 'bg-[#1e3a8a] border-[#a1c6ea] text-white font-semibold shadow-md shadow-blue-950'
+                              : 'bg-[#090f21] border-blue-900/80 text-sky-200 hover:bg-[#1a294d]'
                           }`}
                         >
                           <div className="text-xs font-bold">{opt.label}</div>
-                          <div className="text-[10px] text-slate-500 mt-0.5">{opt.desc}</div>
+                          <div className="text-[10px] text-sky-300/80 mt-0.5">{opt.desc}</div>
                         </button>
                       ))}
                     </div>
@@ -1668,24 +1564,24 @@
 
                   <div className="grid grid-cols-2 gap-3 pt-1">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">Target Kelas</label>
+                      <label className="block text-xs font-semibold text-sky-200 mb-1">Target Kelas</label>
                       <select
                         value={printConfig.classRoom}
                         onChange={(e) => setPrintConfig({ ...printConfig, classRoom: e.target.value })}
-                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                       >
-                        {INITIAL_CLASSES.map(c => <option key={c} value={c}>Kelas {c}</option>)}
+                        {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">Kelas {c}</option>)}
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">Mata Pelajaran</label>
+                      <label className="block text-xs font-semibold text-sky-200 mb-1">Mata Pelajaran</label>
                       <select
                         value={printConfig.subject}
                         onChange={(e) => setPrintConfig({ ...printConfig, subject: e.target.value })}
-                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                       >
-                        {INITIAL_SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                        {INITIAL_SUBJECTS.map(s => <option key={s} value={s} className="bg-[#0b1329] text-sky-100">{s}</option>)}
                       </select>
                     </div>
                   </div>
@@ -1693,39 +1589,39 @@
                   {(printConfig.type === 'rekap' || printConfig.type === 'jurnal') && (
                     <div className="grid grid-cols-2 gap-3 animate-fadeIn">
                       <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">Tanggal Mulai</label>
+                        <label className="block text-xs font-semibold text-sky-200 mb-1">Tanggal Mulai</label>
                         <input
                           type="date"
                           value={printConfig.startDate}
                           onChange={(e) => setPrintConfig({ ...printConfig, startDate: e.target.value })}
-                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                          className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">Tanggal Selesai</label>
+                        <label className="block text-xs font-semibold text-sky-200 mb-1">Tanggal Selesai</label>
                         <input
                           type="date"
                           value={printConfig.endDate}
                           onChange={(e) => setPrintConfig({ ...printConfig, endDate: e.target.value })}
-                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                          className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                         />
                       </div>
                     </div>
                   )}
 
-                  <div className="bg-sky-50/70 p-3 rounded-2xl border border-sky-100 text-[11px] text-sky-900 leading-relaxed">
-                    <p className="font-semibold flex items-center gap-1.5 mb-0.5">
-                      <Icon name="Info" className="w-3.5 h-3.5 text-sky-600 shrink-0" />
+                  <div className="bg-[#090f21] p-3 rounded-2xl border border-[#a1c6ea]/30 text-[11px] text-sky-200 leading-relaxed">
+                    <p className="font-semibold flex items-center gap-1.5 mb-0.5 text-[#a1c6ea]">
+                      <Icon name="Info" className="w-3.5 h-3.5 shrink-0" />
                       Sistem Cetak PDF EduTeach:
                     </p>
-                    Halaman pratinjau cetak resmi akan muncul secara otomatis. Dokumen memuat Header Aplikasi & Watermark <strong className="underline">@ihsanmsyahid</strong> di bagian footer.
+                    Halaman pratinjau cetak resmi akan muncul secara otomatis dengan header <strong className="text-sky-300">SMP YPU Bandung</strong>.
                   </div>
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                <div className="flex items-center justify-end gap-3 pt-3 border-t border-blue-900/60">
                   <button
                     onClick={() => setIsPrintModalOpen(false)}
-                    className="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                    className="px-4 py-2.5 text-xs font-semibold text-sky-300 hover:bg-[#1a294d] rounded-xl"
                   >
                     Batal
                   </button>
@@ -1740,7 +1636,7 @@
                         printConfig.endDate
                       );
                     }}
-                    className="px-6 py-2.5 text-xs font-bold bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow-lg shadow-sky-500/30 flex items-center gap-2"
+                    className="px-6 py-2.5 text-xs font-bold bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl shadow-lg shadow-blue-950 flex items-center gap-2"
                   >
                     <Icon name="Printer" className="w-4 h-4" /> Cetak ke PDF
                   </button>
@@ -1750,41 +1646,41 @@
           )}
 
           <div className="flex flex-1 overflow-hidden">
-            {}
+            {/* Sidebar */}
             <aside
-              className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 border-r border-slate-800 text-slate-300 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col justify-between ${
+              className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#090f21] border-r border-[#a1c6ea]/20 text-sky-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col justify-between ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
               }`}
             >
               <div>
-                <div className="h-20 flex items-center justify-between px-5 border-b border-slate-800">
+                <div className="h-20 flex items-center justify-between px-5 border-b border-[#a1c6ea]/20">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 p-1 flex items-center justify-center bg-white/10 shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-[#0b1329] border border-[#a1c6ea]/40 p-1 flex items-center justify-center shrink-0">
                       <img
                         src={HEADER_LOGO_URL}
                         alt="Logo EduTeach"
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = "https://placehold.co/80x80/0284c7/ffffff?text=Edu";
+                          e.target.src = "https://placehold.co/80x80/2563eb/ffffff?text=Edu";
                         }}
                         className="w-full h-full object-contain rounded-lg"
                       />
                     </div>
                     <div>
-                      <h1 className="font-bold text-white text-lg leading-tight tracking-wide">EduTeach Pro</h1>
-                      <p className="text-xs text-sky-400 font-medium flex items-center gap-1.5">
+                      <h1 className="font-bold text-[#a1c6ea] text-lg leading-tight tracking-wide">EduTeach Pro</h1>
+                      <p className="text-xs text-sky-300 font-medium flex items-center gap-1.5">
                         SMP YPU Bandung
                         {syncing && <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping inline-block" title="Sedang menyinkronkan data..."></span>}
                       </p>
                     </div>
                   </div>
-                  <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-slate-400 hover:text-white">
+                  <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-sky-300 hover:text-sky-100">
                     <Icon name="X" className="w-6 h-6" />
                   </button>
                 </div>
 
                 <nav className="p-4 space-y-1.5">
-                  <p className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                  <p className="px-3 text-xs font-semibold text-sky-400/80 uppercase tracking-wider mb-2">
                     Menu Utama
                   </p>
                   {menuItems.map((item) => {
@@ -1802,11 +1698,11 @@
                         }}
                         className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
                           isActive && item.id !== 'cetak'
-                            ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/30 font-semibold'
-                            : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
+                            ? 'bg-[#a1c6ea] text-[#0b1329] shadow-lg shadow-blue-950 font-bold'
+                            : 'text-sky-200 hover:bg-[#152347] hover:text-sky-100'
                         }`}
                       >
-                        <Icon name={item.icon} className={`w-5 h-5 ${isActive && item.id !== 'cetak' ? 'text-white' : 'text-slate-400'}`} />
+                        <Icon name={item.icon} className={`w-5 h-5 ${isActive && item.id !== 'cetak' ? 'text-[#0b1329]' : 'text-[#a1c6ea]'}`} />
                         <span>{item.label}</span>
                       </button>
                     );
@@ -1814,20 +1710,20 @@
                 </nav>
               </div>
 
-              <div className="p-4 border-t border-slate-800">
-                <div className="flex items-center justify-between bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+              <div className="p-4 border-t border-[#a1c6ea]/20">
+                <div className="flex items-center justify-between bg-[#0b1329] p-3 rounded-xl border border-[#a1c6ea]/30">
                   <div className="flex items-center gap-3 overflow-hidden">
-                    <div className="w-10 h-10 rounded-full bg-sky-500/20 border border-sky-500/40 text-sky-400 flex items-center justify-center font-bold text-sm shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-blue-900/60 border border-[#a1c6ea] text-[#a1c6ea] flex items-center justify-center font-bold text-sm shrink-0">
                       IS
                     </div>
                     <div className="overflow-hidden">
-                      <h4 className="text-sm font-semibold text-white truncate">Ihsan M. Syahid</h4>
-                      <p className="text-xs text-sky-400 truncate">Guru Mata Pelajaran</p>
+                      <h4 className="text-sm font-semibold text-sky-100 truncate">Ihsan M. Syahid</h4>
+                      <p className="text-xs text-sky-300 truncate">Guru Mata Pelajaran</p>
                     </div>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-700/50 rounded-lg transition-colors ml-1"
+                    className="p-2 text-sky-300 hover:text-sky-100 hover:bg-[#192952] rounded-lg transition-colors ml-1"
                     title="Keluar / Logout"
                   >
                     <Icon name="LogOut" className="w-4 h-4" />
@@ -1837,14 +1733,14 @@
             </aside>
 
             {sidebarOpen && (
-              <div onClick={() => setSidebarOpen(false)} className="fixed inset-0 z-30 bg-slate-900/50 backdrop-blur-sm lg:hidden"></div>
+              <div onClick={() => setSidebarOpen(false)} className="fixed inset-0 z-30 bg-black/70 backdrop-blur-sm lg:hidden"></div>
             )}
 
             <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-              {}
-              <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-sky-100 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-xs">
+              {/* Header */}
+              <header className="sticky top-0 z-20 bg-[#090f21]/90 backdrop-blur-md border-b border-[#a1c6ea]/20 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-md">
                 <div className="flex items-center gap-3.5">
-                  <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100">
+                  <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-lg text-sky-200 hover:bg-[#192952]">
                     <Icon name="Menu" className="w-6 h-6" />
                   </button>
 
@@ -1854,16 +1750,16 @@
                       alt="Logo Header"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = "https://placehold.co/80x80/0284c7/ffffff?text=Edu";
+                        e.target.src = "https://placehold.co/80x80/2563eb/ffffff?text=Edu";
                       }}
-                      className="w-9 h-9 rounded-lg object-contain border border-sky-200 shadow-xs hidden sm:block p-0.5 bg-sky-50"
+                      className="w-9 h-9 rounded-lg object-contain border border-[#a1c6ea]/40 hidden sm:block p-0.5 bg-[#0b1329]"
                     />
                     <div>
-                      <h2 className="text-xl font-bold text-slate-900">
+                      <h2 className="text-xl font-bold text-sky-50">
                         {menuItems.find(m => m.id === activeTab)?.label}
                       </h2>
-                      <p className="text-xs text-slate-500 hidden sm:block">
-                        Sistem Informasi Administrasi Mengajar Terpadu • SMP YPU Bandung
+                      <p className="text-xs text-sky-200/80 hidden sm:block">
+                        Sistem Informasi Administrasi Mengajar Terpadu • <strong className="text-[#a1c6ea]">SMP YPU Bandung</strong>
                       </p>
                     </div>
                   </div>
@@ -1872,116 +1768,116 @@
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setIsPrintModalOpen(true)}
-                    className="hidden md:flex items-center gap-2 px-3.5 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 rounded-xl text-xs font-bold transition-all"
+                    className="hidden md:flex items-center gap-2 px-3.5 py-1.5 bg-[#142347] hover:bg-[#1c3061] text-[#a1c6ea] border border-[#a1c6ea]/40 rounded-xl text-xs font-bold transition-all"
                   >
-                    <Icon name="Printer" className="w-4 h-4 text-sky-600" />
+                    <Icon name="Printer" className="w-4 h-4 text-[#a1c6ea]" />
                     <span>Cetak PDF</span>
                   </button>
 
-                  <div className="flex items-center gap-2 bg-sky-50 border border-sky-200/80 text-sky-800 px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow-xs">
-                    <Icon name="Clock" className="w-4 h-4 text-sky-600 animate-pulse" />
-                    <span>{todayFormattedStr} • <strong className="font-mono text-sky-950">{formattedTimeString}</strong></span>
+                  <div className="flex items-center gap-2 bg-[#090f21] border border-[#a1c6ea]/30 text-sky-200 px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow-xs">
+                    <Icon name="Clock" className="w-4 h-4 text-[#a1c6ea] animate-pulse" />
+                    <span>{todayFormattedStr} • <strong className="font-mono text-sky-100">{formattedTimeString}</strong></span>
                   </div>
                 </div>
               </header>
 
-              {/* PAGE MAIN CONTENT */}
+              {/* Main Content */}
               <main className="p-4 lg:p-8 flex-1 max-w-7xl w-full mx-auto space-y-6">
 
-                {}
+                {/* HOME TAB */}
                 {activeTab === 'home' && (
                   <div className="space-y-6 animate-fadeIn">
-                    <div className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 rounded-3xl p-6 lg:p-8 text-white shadow-xl shadow-sky-500/15">
+                    <div className="relative overflow-hidden bg-gradient-to-r from-[#172b5c] via-[#1e3a8a] to-[#0b1329] rounded-3xl p-6 lg:p-8 text-sky-50 border border-[#a1c6ea]/40 shadow-xl shadow-blue-950/50">
                       <div className="absolute right-0 top-0 bottom-0 opacity-15 pointer-events-none pr-10 pt-4">
-                        <Icon name="Sigma" className="w-64 h-64 text-white" />
+                        <Icon name="Sigma" className="w-64 h-64 text-[#a1c6ea]" />
                       </div>
                       <div className="relative z-10 max-w-2xl">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-sky-50 text-xs font-medium mb-3 border border-white/30">
-                          <Icon name="Calendar" className="w-3.5 h-3.5" />
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0b1329]/80 backdrop-blur-md text-[#a1c6ea] text-xs font-medium mb-3 border border-[#a1c6ea]/40">
+                          <Icon name="Calendar" className="w-3.5 h-3.5 text-[#a1c6ea]" />
                           {todayFormattedStr} ({formattedTimeString})
                         </span>
                         <h2 className="text-2xl lg:text-3xl font-extrabold tracking-tight">
                           Selamat Datang, Pak Ihsan M. Syahid! 👋
                         </h2>
                         <p className="mt-2 text-sky-100 text-sm leading-relaxed">
-                          Sistem EduTeach Pro terhubung secara <strong className="underline decoration-sky-300">Real-Time Cloud</strong>. Sesi login Anda tersimpan secara aman sehingga tidak perlu login ulang saat merefresh halaman.
+                          Sistem EduTeach Pro <strong className="text-[#a1c6ea]">SMP YPU Bandung</strong> terhubung secara Real-Time Cloud. Data presensi, nilai, dan jurnal tersimpan aman.
                         </p>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                      <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+                      <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#090f21] text-[#a1c6ea] flex items-center justify-center shrink-0 border border-[#a1c6ea]/30">
                           <Icon name="Layers" className="w-6 h-6" />
                         </div>
                         <div>
-                          <p className="text-xs font-medium text-slate-500">Sesi Mengajar Hari Ini</p>
-                          <h3 className="text-2xl font-bold text-slate-900">{todayScheduleItems.length} Sesi</h3>
-                          <p className="text-[11px] text-sky-600 font-medium mt-0.5">Hari {DAY_NAMES[now.getDay()]}</p>
+                          <p className="text-xs font-medium text-sky-300/80">Sesi Mengajar Hari Ini</p>
+                          <h3 className="text-2xl font-bold text-sky-50">{todayScheduleItems.length} Sesi</h3>
+                          <p className="text-[11px] text-[#a1c6ea] font-medium mt-0.5">Hari {DAY_NAMES[now.getDay()]}</p>
                         </div>
                       </div>
 
-                      <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                      <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#090f21] text-[#a1c6ea] flex items-center justify-center shrink-0 border border-[#a1c6ea]/30">
                           <Icon name="UserCheck" className="w-6 h-6" />
                         </div>
                         <div>
-                          <p className="text-xs font-medium text-slate-500">Presensi Sesi Aktif</p>
-                          <h3 className="text-2xl font-bold text-slate-900">100%</h3>
-                          <p className="text-[11px] text-emerald-600 font-medium mt-0.5">Terdata Tepat Waktu</p>
+                          <p className="text-xs font-medium text-sky-300/80">Presensi Sesi Aktif</p>
+                          <h3 className="text-2xl font-bold text-sky-50">100%</h3>
+                          <p className="text-[11px] text-[#a1c6ea] font-medium mt-0.5">Terdata Tepat Waktu</p>
                         </div>
                       </div>
 
-                      <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                      <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#090f21] text-[#a1c6ea] flex items-center justify-center shrink-0 border border-[#a1c6ea]/30">
                           <Icon name="Users" className="w-6 h-6" />
                         </div>
                         <div>
-                          <p className="text-xs font-medium text-slate-500">Total Murid Terdaftar</p>
-                          <h3 className="text-2xl font-bold text-slate-900">
+                          <p className="text-xs font-medium text-sky-300/80">Total Murid Terdaftar</p>
+                          <h3 className="text-2xl font-bold text-sky-50">
                             {Object.values(studentsData).reduce((a, b) => a + b.length, 0)} Siswa
                           </h3>
-                          <p className="text-[11px] text-indigo-600 font-medium mt-0.5">Kelas VII-A s.d IX-B</p>
+                          <p className="text-[11px] text-[#a1c6ea] font-medium mt-0.5">Kelas VII-A s.d IX-B</p>
                         </div>
                       </div>
 
-                      <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                      <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#090f21] text-[#a1c6ea] flex items-center justify-center shrink-0 border border-[#a1c6ea]/30">
                           <Icon name="BookOpen" className="w-6 h-6" />
                         </div>
                         <div>
-                          <p className="text-xs font-medium text-slate-500">Jurnal Tersimpan</p>
-                          <h3 className="text-2xl font-bold text-slate-900">{journals.length} Jurnal</h3>
-                          <p className="text-[11px] text-blue-600 font-medium mt-0.5">Aktivitas Pembelajaran</p>
+                          <p className="text-xs font-medium text-sky-300/80">Jurnal Tersimpan</p>
+                          <h3 className="text-2xl font-bold text-sky-50">{journals.length} Jurnal</h3>
+                          <p className="text-[11px] text-[#a1c6ea] font-medium mt-0.5">Aktivitas Pembelajaran</p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
-                      <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-white">
+                    <div className="bg-[#111c38] rounded-2xl border border-[#a1c6ea]/30 shadow-md overflow-hidden">
+                      <div className="p-5 border-b border-blue-900/60 flex items-center justify-between bg-[#0e1730]">
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-slate-900 text-base">Jadwal Mengajar Real-Time</h3>
-                            <span className="px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 text-xs font-bold">
+                            <h3 className="font-bold text-sky-50 text-base">Jadwal Mengajar Real-Time</h3>
+                            <span className="px-2.5 py-0.5 rounded-full bg-[#0b1329] text-[#a1c6ea] text-xs font-bold border border-[#a1c6ea]/30">
                               Hari {DAY_NAMES[now.getDay()]}
                             </span>
                           </div>
-                          <p className="text-xs text-slate-500 mt-0.5">
-                            Status diperbarui otomatis berdasarkan jam saat ini: <strong className="font-mono text-slate-800">{formattedTimeString} WIB</strong>
+                          <p className="text-xs text-sky-200/70 mt-0.5">
+                            Status diperbarui otomatis berdasarkan jam saat ini: <strong className="font-mono text-sky-100">{formattedTimeString} WIB</strong>
                           </p>
                         </div>
                         <button
                           onClick={() => setActiveTab('absensi')}
-                          className="text-xs font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1"
+                          className="text-xs font-semibold text-[#a1c6ea] hover:underline flex items-center gap-1"
                         >
                           Buka Presensi Kelas &rarr;
                         </button>
                       </div>
 
-                      <div className="divide-y divide-slate-100">
+                      <div className="divide-y divide-blue-950">
                         {todayScheduleItems.length === 0 ? (
-                          <div className="p-8 text-center text-slate-500 text-xs">
-                            <Icon name="Calendar" className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                          <div className="p-8 text-center text-sky-300/70 text-xs">
+                            <Icon name="Calendar" className="w-8 h-8 text-blue-800 mx-auto mb-2" />
                             Tidak ada jadwal mengajar untuk hari ini ({DAY_NAMES[now.getDay()]}).
                           </div>
                         ) : (
@@ -1991,21 +1887,21 @@
                             const subjIcon = getSubjectIcon(item.subject);
 
                             return (
-                              <div key={item.id} className="p-5 hover:bg-sky-50/50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
+                              <div key={item.id} className="p-5 hover:bg-[#152347]/40 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div className="flex items-start gap-4">
-                                  <div className={`w-12 h-12 rounded-2xl ${subjStyle.iconBg} flex items-center justify-center shrink-0 shadow-md shadow-slate-200`}>
+                                  <div className={`w-12 h-12 rounded-2xl ${subjStyle.iconBg} flex items-center justify-center shrink-0 shadow-md`}>
                                     <Icon name={subjIcon} className="w-6 h-6" />
                                   </div>
                                   <div>
                                     <div className="flex items-center gap-2">
-                                      <h4 className="font-bold text-slate-900 text-base">{item.subject}</h4>
-                                      <span className="px-2.5 py-0.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-md">
+                                      <h4 className="font-bold text-sky-50 text-base">{item.subject}</h4>
+                                      <span className="px-2.5 py-0.5 bg-[#090f21] text-[#a1c6ea] font-bold text-xs rounded-md border border-[#a1c6ea]/30">
                                         {item.classRoom}
                                       </span>
                                     </div>
-                                    <p className="text-xs text-slate-500 mt-1 flex items-center gap-3">
-                                      <span className="inline-flex items-center gap-1 font-medium text-slate-600">
-                                        <Icon name="Clock" className="w-3.5 h-3.5 text-sky-600" />
+                                    <p className="text-xs text-sky-200/70 mt-1 flex items-center gap-3">
+                                      <span className="inline-flex items-center gap-1 font-medium text-sky-200">
+                                        <Icon name="Clock" className="w-3.5 h-3.5 text-[#a1c6ea]" />
                                         {item.jam}
                                       </span>
                                       <span>•</span>
@@ -2016,17 +1912,17 @@
 
                                 <div className="flex items-center gap-3">
                                   {realTimeStatus === 'Selesai' && (
-                                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                      <Icon name="CheckCircle2" className="w-3.5 h-3.5" /> Selesai
+                                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-emerald-950 text-emerald-300 border border-emerald-800">
+                                      <Icon name="CheckCircle2" className="w-3.5 h-3.5 text-emerald-400" /> Selesai
                                     </span>
                                   )}
                                   {realTimeStatus === 'Sedang Berlangsung' && (
-                                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-300 animate-pulse shadow-xs">
+                                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-950 text-amber-300 border border-amber-800 animate-pulse">
                                       <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Sedang Berlangsung
                                     </span>
                                   )}
                                   {realTimeStatus === 'Akan Datang' && (
-                                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#090f21] text-sky-300 border border-blue-900">
                                       <Icon name="Clock" className="w-3.5 h-3.5" /> Akan Datang
                                     </span>
                                   )}
@@ -2038,7 +1934,7 @@
                                       setSelectedPeriod(item.jam);
                                       setActiveTab('absensi');
                                     }}
-                                    className="px-3.5 py-1.5 text-xs font-semibold bg-sky-50 text-sky-600 hover:bg-sky-100 rounded-lg transition-colors border border-sky-100"
+                                    className="px-3.5 py-1.5 text-xs font-semibold bg-[#142347] text-[#a1c6ea] hover:bg-[#1d3263] rounded-lg transition-colors border border-[#a1c6ea]/40"
                                   >
                                     Isi Presensi
                                   </button>
@@ -2052,17 +1948,17 @@
                   </div>
                 )}
 
-                {}
+                {/* ABSENSI TAB */}
                 {activeTab === 'absensi' && (
                   <div className="space-y-6 animate-fadeIn">
-                    <div className="flex items-center justify-between border-b border-sky-200 pb-2">
+                    <div className="flex items-center justify-between border-b border-blue-900/60 pb-2">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => setAbsensiSubTab('harian')}
                           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                             absensiSubTab === 'harian'
-                              ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
-                              : 'bg-white text-slate-600 hover:bg-sky-50'
+                              ? 'bg-[#a1c6ea] text-[#0b1329] shadow-md shadow-blue-950'
+                              : 'bg-[#111c38] text-sky-200 hover:bg-[#18284c] border border-blue-900/40'
                           }`}
                         >
                           <Icon name="UserCheck" className="w-4 h-4 inline mr-1.5" /> Input Presensi Harian
@@ -2072,86 +1968,86 @@
                           onClick={() => setAbsensiSubTab('rekap')}
                           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                             absensiSubTab === 'rekap'
-                              ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
-                              : 'bg-white text-slate-600 hover:bg-sky-50'
+                              ? 'bg-[#a1c6ea] text-[#0b1329] shadow-md shadow-blue-950'
+                              : 'bg-[#111c38] text-sky-200 hover:bg-[#18284c] border border-blue-900/40'
                           }`}
                         >
                           <Icon name="PieChart" className="w-4 h-4 inline mr-1.5" /> Rekap Total Kehadiran Semester
                         </button>
                       </div>
 
-                      <span className="text-xs text-slate-500 hidden sm:inline">
-                        Hari: <strong className="text-sky-900">{DAY_NAMES[selectedDayOfWeek]}</strong>
+                      <span className="text-xs text-sky-200/70 hidden sm:inline">
+                        Hari: <strong className="text-[#a1c6ea]">{DAY_NAMES[selectedDayOfWeek]}</strong>
                       </span>
                     </div>
 
                     {absensiSubTab === 'harian' && (
                       <>
-                        <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm space-y-4">
+                        <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md space-y-4">
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2 text-xs font-semibold text-sky-600 uppercase tracking-wider">
+                            <div className="flex items-center gap-2 text-xs font-semibold text-[#a1c6ea] uppercase tracking-wider">
                               <Icon name="Filter" className="w-4 h-4" /> Filter Jadwal Mengajar Tanggal Ini
                             </div>
-                            <span className="text-xs font-medium text-slate-500 bg-sky-50 px-3 py-1 rounded-lg border border-sky-100">
+                            <span className="text-xs font-medium text-sky-200 bg-[#090f21] px-3 py-1 rounded-lg border border-[#a1c6ea]/30">
                               Hari: <strong>{DAY_NAMES[selectedDayOfWeek]}</strong>
                             </span>
                           </div>
 
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Pilih Tanggal</label>
+                              <label className="block text-xs font-medium text-sky-200 mb-1">Pilih Tanggal</label>
                               <input
                                 type="date"
                                 value={selectedDate}
                                 onChange={(e) => setSelectedDate(e.target.value)}
-                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                               />
                             </div>
 
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Pilih Kelas</label>
+                              <label className="block text-xs font-medium text-sky-200 mb-1">Pilih Kelas</label>
                               <select
                                 value={selectedClass}
                                 onChange={(e) => setSelectedClass(e.target.value)}
                                 disabled={availableClassesForDay.length === 0}
-                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:opacity-50"
+                                className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea] disabled:opacity-50"
                               >
                                 {availableClassesForDay.length === 0 ? (
                                   <option value="">(Tidak Ada Jadwal Kelas)</option>
                                 ) : (
-                                  availableClassesForDay.map(c => <option key={c} value={c}>{c}</option>)
+                                  availableClassesForDay.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">{c}</option>)
                                 )}
                               </select>
                             </div>
 
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Mata Pelajaran</label>
+                              <label className="block text-xs font-medium text-sky-200 mb-1">Mata Pelajaran</label>
                               <select
                                 value={selectedSubject}
                                 onChange={(e) => setSelectedSubject(e.target.value)}
                                 disabled={availableSubjectsForClass.length === 0}
-                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:opacity-50"
+                                className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea] disabled:opacity-50"
                               >
                                 {availableSubjectsForClass.length === 0 ? (
                                   <option value="">(Tidak Ada Mapel)</option>
                                 ) : (
-                                  availableSubjectsForClass.map(s => <option key={s} value={s}>{s}</option>)
+                                  availableSubjectsForClass.map(s => <option key={s} value={s} className="bg-[#0b1329] text-sky-100">{s}</option>)
                                 )}
                               </select>
                             </div>
 
                             <div>
-                              <label className="block text-xs font-medium text-slate-600 mb-1">Jam Pelajaran</label>
+                              <label className="block text-xs font-medium text-sky-200 mb-1">Jam Pelajaran</label>
                               <select
                                 value={selectedPeriod}
                                 onChange={(e) => setSelectedPeriod(e.target.value)}
                                 disabled={availablePeriodsForSubject.length === 0}
-                                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:opacity-50"
+                                className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea] disabled:opacity-50"
                               >
                                 {availablePeriodsForSubject.length === 0 ? (
                                   <option value="">(Tidak Ada Jam)</option>
                                 ) : (
-                                  availablePeriodsForSubject.map(p => <option key={p} value={p}>{p}</option>)
+                                  availablePeriodsForSubject.map(p => <option key={p} value={p} className="bg-[#0b1329] text-sky-100">{p}</option>)
                                 )}
                               </select>
                             </div>
@@ -2159,84 +2055,84 @@
                         </div>
 
                         {availableClassesForDay.length === 0 ? (
-                          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-8 text-center space-y-3">
-                            <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto">
+                          <div className="bg-[#090f21] border border-blue-900 rounded-2xl p-8 text-center space-y-3">
+                            <div className="w-12 h-12 rounded-2xl bg-blue-950 text-[#a1c6ea] flex items-center justify-center mx-auto border border-blue-800">
                               <Icon name="AlertCircle" className="w-6 h-6" />
                             </div>
-                            <h4 className="text-base font-bold text-amber-900">
+                            <h4 className="text-base font-bold text-sky-100">
                               Tidak Ada Jadwal Mengajar di Hari {DAY_NAMES[selectedDayOfWeek]} ({selectedDate})
                             </h4>
-                            <p className="text-xs text-amber-700 max-w-md mx-auto leading-relaxed">
+                            <p className="text-xs text-sky-300 max-w-md mx-auto leading-relaxed">
                               Sesuai master jadwal resmi, Anda tidak memiliki jam pelajaran pada hari ini.
                             </p>
                           </div>
                         ) : (
                           <>
-                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-blue-900 text-white p-4 rounded-2xl shadow-md">
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-[#090f21] text-sky-100 p-4 rounded-2xl border border-[#a1c6ea]/30 shadow-md">
                               <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-blue-800 flex items-center justify-center shrink-0 border border-blue-700">
-                                  <Icon name="Users" className="w-5 h-5 text-blue-200" />
+                                <div className="w-10 h-10 rounded-xl bg-[#142347] flex items-center justify-center shrink-0 border border-[#a1c6ea]/40">
+                                  <Icon name="Users" className="w-5 h-5 text-[#a1c6ea]" />
                                 </div>
                                 <div>
                                   <h4 className="font-bold text-sm">Daftar Kehadiran: {selectedClass}</h4>
-                                  <p className="text-xs text-blue-300">{selectedSubject} • {selectedPeriod}</p>
+                                  <p className="text-xs text-sky-300">{selectedSubject} • {selectedPeriod}</p>
                                 </div>
                               </div>
 
                               <div className="flex items-center gap-2 flex-wrap">
                                 <button
                                   onClick={handleMarkAllPresent}
-                                  className="flex-1 sm:flex-initial px-3.5 py-2 bg-blue-800 hover:bg-blue-700 text-blue-100 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-blue-600/50"
+                                  className="flex-1 sm:flex-initial px-3.5 py-2 bg-[#172c5a] hover:bg-[#1f3a78] text-sky-100 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-blue-700"
                                 >
                                   <Icon name="CheckSquare" className="w-4 h-4 text-emerald-400" /> Ceklis Hadir Semua
                                 </button>
                                 <button
                                   onClick={handleDeleteAttendance}
-                                  className="flex-1 sm:flex-initial px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                                  className="flex-1 sm:flex-initial px-3.5 py-2 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-rose-800"
                                   title="Hapus data absensi sesi ini"
                                 >
                                   <Icon name="Trash2" className="w-4 h-4" /> Hapus Absensi
                                 </button>
                                 <button
                                   onClick={handleSaveAttendance}
-                                  className="flex-1 sm:flex-initial px-5 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-lg shadow-sky-500/30"
+                                  className="flex-1 sm:flex-initial px-5 py-2 bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-lg shadow-blue-950"
                                 >
                                   <Icon name="Save" className="w-4 h-4" /> Simpan Absensi
                                 </button>
                               </div>
                             </div>
 
-                            <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
+                            <div className="bg-[#111c38] rounded-2xl border border-[#a1c6ea]/30 shadow-md overflow-hidden">
                               <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse text-xs">
                                   <thead>
-                                    <tr className="bg-sky-50/70 border-b border-sky-100 text-slate-700 uppercase tracking-wider font-semibold">
+                                    <tr className="bg-[#090f21] border-b border-blue-900 text-[#a1c6ea] uppercase tracking-wider font-semibold">
                                       <th className="py-3.5 px-4 text-center w-12">No</th>
                                       <th className="py-3.5 px-4 w-36">NISN</th>
                                       <th className="py-3.5 px-4 min-w-[200px]">Nama Siswa</th>
                                       <th className="py-3.5 px-4 text-center min-w-[320px]">Status Kehadiran</th>
                                     </tr>
                                   </thead>
-                                  <tbody className="divide-y divide-slate-100">
+                                  <tbody className="divide-y divide-blue-950">
                                     {currentStudents.map((siswa, idx) => {
                                       const att = getStudentAttendance(siswa.id);
                                       const isNotPresent = att.mainStatus === 'Tidak Hadir';
 
                                       return (
-                                        <tr key={siswa.id} className="hover:bg-sky-50/40 transition-colors">
-                                          <td className="py-3.5 px-4 text-center font-medium text-slate-500">{idx + 1}</td>
-                                          <td className="py-3.5 px-4 font-mono text-slate-600">{siswa.nisn}</td>
-                                          <td className="py-3.5 px-4 font-semibold text-slate-900">{siswa.name}</td>
+                                        <tr key={siswa.id} className="hover:bg-[#152347]/40 transition-colors">
+                                          <td className="py-3.5 px-4 text-center font-medium text-sky-300/70">{idx + 1}</td>
+                                          <td className="py-3.5 px-4 font-mono text-sky-200">{siswa.nisn}</td>
+                                          <td className="py-3.5 px-4 font-semibold text-sky-50">{siswa.name}</td>
                                           <td className="py-3.5 px-4">
                                             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                                              <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200">
+                                              <div className="inline-flex p-1 bg-[#090f21] rounded-xl border border-blue-900">
                                                 <button
                                                   type="button"
                                                   onClick={() => updateStudentAttendance(siswa.id, 'Hadir')}
                                                   className={`px-4 py-1.5 rounded-lg font-semibold transition-all ${
                                                     att.mainStatus === 'Hadir'
-                                                      ? 'bg-emerald-500 text-white shadow-xs'
-                                                      : 'text-slate-600 hover:text-slate-900'
+                                                      ? 'bg-emerald-600 text-white shadow-xs'
+                                                      : 'text-sky-300 hover:text-sky-100'
                                                   }`}
                                                 >
                                                   Hadir
@@ -2246,8 +2142,8 @@
                                                   onClick={() => updateStudentAttendance(siswa.id, 'Tidak Hadir', att.reason || 'Sakit')}
                                                   className={`px-4 py-1.5 rounded-lg font-semibold transition-all ${
                                                     att.mainStatus === 'Tidak Hadir'
-                                                      ? 'bg-rose-500 text-white shadow-xs'
-                                                      : 'text-slate-600 hover:text-slate-900'
+                                                      ? 'bg-rose-700 text-white shadow-xs'
+                                                      : 'text-sky-300 hover:text-sky-100'
                                                   }`}
                                                 >
                                                   Tidak Hadir
@@ -2259,11 +2155,11 @@
                                                   <select
                                                     value={att.reason || 'Sakit'}
                                                     onChange={(e) => updateStudentAttendance(siswa.id, 'Tidak Hadir', e.target.value)}
-                                                    className="px-3 py-1.5 bg-rose-50 border border-rose-300 text-rose-900 font-bold rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-rose-500"
+                                                    className="px-3 py-1.5 bg-[#090f21] border border-rose-800 text-rose-200 font-bold rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-rose-600"
                                                   >
-                                                    <option value="Sakit">😷 Sakit</option>
-                                                    <option value="Izin">✉️ Izin</option>
-                                                    <option value="Alfa">❌ Alfa</option>
+                                                    <option value="Sakit" className="bg-[#0b1329]">😷 Sakit</option>
+                                                    <option value="Izin" className="bg-[#0b1329]">✉️ Izin</option>
+                                                    <option value="Alfa" className="bg-[#0b1329]">❌ Alfa</option>
                                                   </select>
                                                 </div>
                                               )}
@@ -2283,48 +2179,48 @@
 
                     {absensiSubTab === 'rekap' && (
                       <div className="space-y-6">
-                        <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm space-y-4">
+                        <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md space-y-4">
                           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 flex-1">
                               <div>
-                                <label className="block text-xs font-medium text-slate-600 mb-1">Kelas Target</label>
+                                <label className="block text-xs font-medium text-sky-200 mb-1">Kelas Target</label>
                                 <select
                                   value={selectedClass}
                                   onChange={(e) => setSelectedClass(e.target.value)}
-                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                  className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                 >
-                                  {INITIAL_CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
+                                  {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">{c}</option>)}
                                 </select>
                               </div>
 
                               <div>
-                                <label className="block text-xs font-medium text-slate-600 mb-1">Mata Pelajaran</label>
+                                <label className="block text-xs font-medium text-sky-200 mb-1">Mata Pelajaran</label>
                                 <select
                                   value={selectedSubject}
                                   onChange={(e) => setSelectedSubject(e.target.value)}
-                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                  className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                 >
-                                  {INITIAL_SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                                  {INITIAL_SUBJECTS.map(s => <option key={s} value={s} className="bg-[#0b1329] text-sky-100">{s}</option>)}
                                 </select>
                               </div>
 
                               <div>
-                                <label className="block text-xs font-medium text-slate-600 mb-1">Tanggal Mulai (Awal)</label>
+                                <label className="block text-xs font-medium text-sky-200 mb-1">Tanggal Mulai (Awal)</label>
                                 <input
                                   type="date"
                                   value={rekapStartDate}
                                   onChange={(e) => setRekapStartDate(e.target.value)}
-                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                  className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                 />
                               </div>
 
                               <div>
-                                <label className="block text-xs font-medium text-slate-600 mb-1">Tanggal Selesai (Akhir)</label>
+                                <label className="block text-xs font-medium text-sky-200 mb-1">Tanggal Selesai (Akhir)</label>
                                 <input
                                   type="date"
                                   value={rekapEndDate}
                                   onChange={(e) => setRekapEndDate(e.target.value)}
-                                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                  className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                 />
                               </div>
                             </div>
@@ -2340,26 +2236,26 @@
                                 });
                                 executePDFPrint('rekap', selectedClass, selectedSubject, rekapStartDate, rekapEndDate);
                               }}
-                              className="px-4 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 self-stretch lg:self-end shrink-0"
+                              className="px-4 py-2.5 bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-950 flex items-center justify-center gap-2 self-stretch lg:self-end shrink-0"
                             >
                               <Icon name="Printer" className="w-4 h-4" /> Cetak Rekap PDF
                             </button>
                           </div>
 
-                          <div className="text-xs bg-sky-50 text-sky-800 border border-sky-200 p-2.5 rounded-xl font-medium flex items-center justify-between flex-wrap gap-2">
+                          <div className="text-xs bg-[#090f21] text-sky-200 border border-[#a1c6ea]/20 p-2.5 rounded-xl font-medium flex items-center justify-between flex-wrap gap-2">
                             <span>
-                              Filter Periode Kehadiran: <strong className="font-bold">{rekapStartDate || 'Awal'}</strong> s.d <strong className="font-bold">{rekapEndDate || 'Akhir'}</strong>
+                              Filter Periode Kehadiran: <strong className="font-bold text-[#a1c6ea]">{rekapStartDate || 'Awal'}</strong> s.d <strong className="font-bold text-[#a1c6ea]">{rekapEndDate || 'Akhir'}</strong>
                             </span>
                             <span>Persentase Kehadiran = <strong>(Hadir / Total Sesi Input) × 100%</strong></span>
                           </div>
                         </div>
 
-                        <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
-                          <div className="p-4 border-b border-slate-100 bg-sky-50/50 flex items-center justify-between">
-                            <h4 className="font-bold text-slate-900 text-sm">
+                        <div className="bg-[#111c38] rounded-2xl border border-[#a1c6ea]/30 shadow-md overflow-hidden">
+                          <div className="p-4 border-b border-blue-900/60 bg-[#0e1730] flex items-center justify-between">
+                            <h4 className="font-bold text-sky-50 text-sm">
                               Laporan Rekapitulasi Presensi Periodik ({selectedClass} - {selectedSubject})
                             </h4>
-                            <span className="text-xs font-semibold text-sky-700 bg-sky-100 px-3 py-1 rounded-full">
+                            <span className="text-xs font-semibold text-[#a1c6ea] bg-[#090f21] px-3 py-1 rounded-full border border-[#a1c6ea]/30">
                               Total Siswa: {currentStudents.length}
                             </span>
                           </div>
@@ -2367,35 +2263,35 @@
                           <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse text-xs">
                               <thead>
-                                <tr className="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider">
+                                <tr className="bg-[#090f21] border-b border-blue-900 text-[#a1c6ea] font-bold uppercase tracking-wider">
                                   <th className="py-3.5 px-4 text-center w-12">No</th>
                                   <th className="py-3.5 px-4">NISN</th>
                                   <th className="py-3.5 px-4 min-w-[200px]">Nama Siswa</th>
                                   <th className="py-3.5 px-3 text-center">Sesi</th>
-                                  <th className="py-3.5 px-3 text-center bg-emerald-50 text-emerald-900">Hadir</th>
-                                  <th className="py-3.5 px-3 text-center bg-amber-50 text-amber-900">Sakit</th>
-                                  <th className="py-3.5 px-3 text-center bg-blue-50 text-blue-900">Izin</th>
-                                  <th className="py-3.5 px-3 text-center bg-rose-50 text-rose-900">Alfa</th>
-                                  <th className="py-3.5 px-4 text-center font-extrabold bg-sky-100 text-sky-950">
+                                  <th className="py-3.5 px-3 text-center bg-emerald-950 text-emerald-300">Hadir</th>
+                                  <th className="py-3.5 px-3 text-center bg-amber-950 text-amber-300">Sakit</th>
+                                  <th className="py-3.5 px-3 text-center bg-blue-950 text-sky-300">Izin</th>
+                                  <th className="py-3.5 px-3 text-center bg-rose-950 text-rose-300">Alfa</th>
+                                  <th className="py-3.5 px-4 text-center font-extrabold bg-[#192b52] text-sky-100">
                                     % Kehadiran
                                   </th>
                                 </tr>
                               </thead>
-                              <tbody className="divide-y divide-slate-100">
+                              <tbody className="divide-y divide-blue-950">
                                 {semesterRecapData.map((item, idx) => (
-                                  <tr key={item.student.id} className="hover:bg-sky-50/40 transition-colors">
-                                    <td className="py-3 px-4 text-center font-medium text-slate-500">{idx + 1}</td>
-                                    <td className="py-3 px-4 font-mono text-slate-600">{item.student.nisn}</td>
-                                    <td className="py-3 px-4 font-semibold text-slate-900">{item.student.name}</td>
-                                    <td className="py-3 px-3 text-center font-bold text-slate-700">{item.totalMeetings}</td>
-                                    <td className="py-3 px-3 text-center font-bold text-emerald-700 bg-emerald-50/30">{item.hadir}</td>
-                                    <td className="py-3 px-3 text-center font-bold text-amber-700 bg-amber-50/30">{item.sakit}</td>
-                                    <td className="py-3 px-3 text-center font-bold text-blue-700 bg-blue-50/30">{item.izin}</td>
-                                    <td className="py-3 px-3 text-center font-bold text-rose-700 bg-rose-50/30">{item.alfa}</td>
-                                    <td className="py-3 px-4 text-center bg-sky-50/60">
+                                  <tr key={item.student.id} className="hover:bg-[#152347]/40 transition-colors">
+                                    <td className="py-3 px-4 text-center font-medium text-sky-300/70">{idx + 1}</td>
+                                    <td className="py-3 px-4 font-mono text-sky-200">{item.student.nisn}</td>
+                                    <td className="py-3 px-4 font-semibold text-sky-50">{item.student.name}</td>
+                                    <td className="py-3 px-3 text-center font-bold text-sky-200">{item.totalMeetings}</td>
+                                    <td className="py-3 px-3 text-center font-bold text-emerald-400 bg-emerald-950/40">{item.hadir}</td>
+                                    <td className="py-3 px-3 text-center font-bold text-amber-400 bg-amber-950/40">{item.sakit}</td>
+                                    <td className="py-3 px-3 text-center font-bold text-sky-300 bg-blue-950/40">{item.izin}</td>
+                                    <td className="py-3 px-3 text-center font-bold text-rose-400 bg-rose-950/40">{item.alfa}</td>
+                                    <td className="py-3 px-4 text-center bg-[#090f21]/60">
                                       <div className="flex items-center justify-center gap-2">
-                                        <span className="font-extrabold text-sm text-sky-900">{item.pct}%</span>
-                                        <div className="w-16 bg-slate-200 rounded-full h-2 overflow-hidden hidden sm:block">
+                                        <span className="font-extrabold text-sm text-sky-100">{item.pct}%</span>
+                                        <div className="w-16 bg-[#090f21] rounded-full h-2 overflow-hidden hidden sm:block border border-blue-900">
                                           <div
                                             className={`h-full rounded-full ${
                                               item.pct >= 85 ? 'bg-emerald-500' : item.pct >= 75 ? 'bg-amber-500' : 'bg-rose-500'
@@ -2416,33 +2312,33 @@
                   </div>
                 )}
 
-                {}
+                {/* DAFTAR MURID TAB */}
                 {activeTab === 'murid' && (
                   <div className="space-y-6 animate-fadeIn">
-                    <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 mb-1">Filter Kelas</label>
+                          <label className="block text-xs font-medium text-sky-200 mb-1">Filter Kelas</label>
                           <select
                             value={studentDirectoryClassFilter}
                             onChange={(e) => setStudentDirectoryClassFilter(e.target.value)}
-                            className="w-full sm:w-auto px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            className="w-full sm:w-auto px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                           >
-                            <option value="ALL">Semua Kelas (VII-A s.d IX-B)</option>
-                            {INITIAL_CLASSES.map(c => <option key={c} value={c}>Kelas {c}</option>)}
+                            <option value="ALL" className="bg-[#0b1329] text-sky-100">Semua Kelas (VII-A s.d IX-B)</option>
+                            {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">Kelas {c}</option>)}
                           </select>
                         </div>
 
                         <div className="flex-1 max-w-md">
-                          <label className="block text-xs font-medium text-slate-600 mb-1">Cari Nama / NISN</label>
+                          <label className="block text-xs font-medium text-sky-200 mb-1">Cari Nama / NISN</label>
                           <div className="relative">
-                            <Icon name="Search" className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                            <Icon name="Search" className="w-4 h-4 text-[#a1c6ea] absolute left-3 top-2.5" />
                             <input
                               type="text"
                               value={studentSearchQuery}
                               onChange={(e) => setStudentSearchQuery(e.target.value)}
                               placeholder="Ketik nama atau NISN siswa..."
-                              className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                              className="w-full pl-9 pr-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 placeholder-sky-400/50 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                             />
                           </div>
                         </div>
@@ -2453,18 +2349,18 @@
                           setNewStudentForm({ classRoom: selectedClass, nisn: '', name: '' });
                           setIsAddStudentModalOpen(true);
                         }}
-                        className="px-5 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 self-start md:self-auto"
+                        className="px-5 py-2.5 bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-950 flex items-center justify-center gap-2 self-start md:self-auto"
                       >
                         <Icon name="UserPlus" className="w-4 h-4" /> Tambah Siswa Baru
                       </button>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
-                      <div className="p-4 border-b border-slate-100 bg-sky-50/50 flex items-center justify-between">
-                        <h3 className="font-bold text-slate-900 text-sm">
+                    <div className="bg-[#111c38] rounded-2xl border border-[#a1c6ea]/30 shadow-md overflow-hidden">
+                      <div className="p-4 border-b border-blue-900/60 bg-[#0e1730] flex items-center justify-between">
+                        <h3 className="font-bold text-sky-50 text-sm">
                           Direktori Siswa {studentDirectoryClassFilter === 'ALL' ? 'Seluruh Kelas' : `Kelas ${studentDirectoryClassFilter}`}
                         </h3>
-                        <span className="text-xs font-semibold text-sky-700 bg-sky-100 px-3 py-1 rounded-full">
+                        <span className="text-xs font-semibold text-[#a1c6ea] bg-[#090f21] px-3 py-1 rounded-full border border-[#a1c6ea]/30">
                           Ditemukan: {filteredDirectoryStudents.length} Siswa
                         </span>
                       </div>
@@ -2472,7 +2368,7 @@
                       <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse text-xs">
                           <thead>
-                            <tr className="bg-slate-100 border-b border-slate-200 text-slate-700 uppercase tracking-wider font-semibold">
+                            <tr className="bg-[#090f21] border-b border-blue-900 text-[#a1c6ea] uppercase tracking-wider font-semibold">
                               <th className="py-3.5 px-4 text-center w-12">No</th>
                               <th className="py-3.5 px-4 w-28 text-center">Kelas</th>
                               <th className="py-3.5 px-4 w-40">NISN</th>
@@ -2480,36 +2376,36 @@
                               <th className="py-3.5 px-4 text-center w-32">Aksi</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100">
+                          <tbody className="divide-y divide-blue-950">
                             {filteredDirectoryStudents.length === 0 ? (
                               <tr>
-                                <td colSpan="5" className="py-12 text-center text-slate-400">
+                                <td colSpan="5" className="py-12 text-center text-sky-400/60">
                                   Siswa tidak ditemukan.
                                 </td>
                               </tr>
                             ) : (
                               filteredDirectoryStudents.map((s, idx) => (
-                                <tr key={s.id} className="hover:bg-sky-50/40 transition-colors">
-                                  <td className="py-3.5 px-4 text-center font-medium text-slate-500">{idx + 1}</td>
+                                <tr key={s.id} className="hover:bg-[#152347]/40 transition-colors">
+                                  <td className="py-3.5 px-4 text-center font-medium text-sky-300/70">{idx + 1}</td>
                                   <td className="py-3.5 px-4 text-center">
-                                    <span className="px-2.5 py-1 bg-sky-100 text-sky-800 font-bold text-[11px] rounded-lg">
+                                    <span className="px-2.5 py-1 bg-[#090f21] text-[#a1c6ea] font-bold text-[11px] rounded-lg border border-[#a1c6ea]/30">
                                       {s.classRoom}
                                     </span>
                                   </td>
-                                  <td className="py-3.5 px-4 font-mono text-slate-600">{s.nisn}</td>
-                                  <td className="py-3.5 px-4 font-semibold text-slate-900">{s.name}</td>
+                                  <td className="py-3.5 px-4 font-mono text-sky-200">{s.nisn}</td>
+                                  <td className="py-3.5 px-4 font-semibold text-sky-50">{s.name}</td>
                                   <td className="py-3.5 px-4 text-center">
                                     <div className="flex items-center justify-center gap-1.5">
                                       <button
                                         onClick={() => openEditStudentModal(s, s.classRoom)}
-                                        className="p-1.5 text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
+                                        className="p-1.5 text-[#a1c6ea] hover:bg-[#090f21] rounded-lg transition-colors"
                                         title="Edit Siswa"
                                       >
                                         <Icon name="Edit2" className="w-4 h-4" />
                                       </button>
                                       <button
                                         onClick={() => handleDeleteStudent(s.classRoom, s.id, s.name)}
-                                        className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+                                        className="p-1.5 text-rose-400 hover:bg-rose-950 rounded-lg transition-colors"
                                         title="Hapus Siswa"
                                       >
                                         <Icon name="Trash2" className="w-4 h-4" />
@@ -2526,65 +2422,65 @@
 
                     {/* MODAL TAMBAH SISWA */}
                     {isAddStudentModalOpen && (
-                      <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-                        <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-scaleUp">
-                          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-                              <Icon name="UserPlus" className="w-5 h-5 text-sky-600" />
+                      <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="bg-[#111c38] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#a1c6ea]/40 space-y-5 animate-scaleUp">
+                          <div className="flex items-center justify-between border-b border-blue-900/60 pb-3">
+                            <h3 className="font-bold text-sky-50 text-base flex items-center gap-2">
+                              <Icon name="UserPlus" className="w-5 h-5 text-[#a1c6ea]" />
                               Tambah Siswa Baru
                             </h3>
-                            <button onClick={() => setIsAddStudentModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setIsAddStudentModalOpen(false)} className="text-sky-300 hover:text-sky-100">
                               <Icon name="X" className="w-5 h-5" />
                             </button>
                           </div>
 
                           <form onSubmit={handleAddStudentSubmit} className="space-y-4">
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Kelas Target *</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Kelas Target *</label>
                               <select
                                 value={newStudentForm.classRoom}
                                 onChange={(e) => setNewStudentForm({ ...newStudentForm, classRoom: e.target.value })}
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                               >
-                                {INITIAL_CLASSES.map(c => <option key={c} value={c}>Kelas {c}</option>)}
+                                {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">Kelas {c}</option>)}
                               </select>
                             </div>
 
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Nomor NISN *</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Nomor NISN *</label>
                               <input
                                 type="text"
                                 value={newStudentForm.nisn}
                                 onChange={(e) => setNewStudentForm({ ...newStudentForm, nisn: e.target.value })}
                                 placeholder="Contoh: 0138492041"
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                 required
                               />
                             </div>
 
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap Siswa *</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Nama Lengkap Siswa *</label>
                               <input
                                 type="text"
                                 value={newStudentForm.name}
                                 onChange={(e) => setNewStudentForm({ ...newStudentForm, name: e.target.value })}
                                 placeholder="Contoh: Muhammad Rizky"
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                 required
                               />
                             </div>
 
-                            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                            <div className="flex items-center justify-end gap-3 pt-3 border-t border-blue-900/60">
                               <button
                                 type="button"
                                 onClick={() => setIsAddStudentModalOpen(false)}
-                                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                                className="px-4 py-2 text-xs font-semibold text-sky-300 hover:bg-[#1a294d] rounded-xl"
                               >
                                 Batal
                               </button>
                               <button
                                 type="submit"
-                                className="px-5 py-2 text-xs font-bold bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow-md shadow-sky-500/20"
+                                className="px-5 py-2 text-xs font-bold bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl shadow-md shadow-blue-950"
                               >
                                 Simpan Siswa
                               </button>
@@ -2596,63 +2492,63 @@
 
                     {/* MODAL EDIT SISWA */}
                     {isEditStudentModalOpen && (
-                      <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-                        <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-scaleUp">
-                          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-                              <Icon name="Edit2" className="w-5 h-5 text-sky-600" />
+                      <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="bg-[#111c38] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#a1c6ea]/40 space-y-5 animate-scaleUp">
+                          <div className="flex items-center justify-between border-b border-blue-900/60 pb-3">
+                            <h3 className="font-bold text-sky-50 text-base flex items-center gap-2">
+                              <Icon name="Edit2" className="w-5 h-5 text-[#a1c6ea]" />
                               Edit Data Siswa
                             </h3>
-                            <button onClick={() => setIsEditStudentModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setIsEditStudentModalOpen(false)} className="text-sky-300 hover:text-sky-100">
                               <Icon name="X" className="w-5 h-5" />
                             </button>
                           </div>
 
                           <form onSubmit={handleEditStudentSubmit} className="space-y-4">
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Kelas *</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Kelas *</label>
                               <select
                                 value={editStudentForm.classRoom}
                                 onChange={(e) => setEditStudentForm({ ...editStudentForm, classRoom: e.target.value })}
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                               >
-                                {INITIAL_CLASSES.map(c => <option key={c} value={c}>Kelas {c}</option>)}
+                                {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">Kelas {c}</option>)}
                               </select>
                             </div>
 
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Nomor NISN *</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Nomor NISN *</label>
                               <input
                                 type="text"
                                 value={editStudentForm.nisn}
                                 onChange={(e) => setEditStudentForm({ ...editStudentForm, nisn: e.target.value })}
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                 required
                               />
                             </div>
 
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap Siswa *</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Nama Lengkap Siswa *</label>
                               <input
                                 type="text"
                                 value={editStudentForm.name}
                                 onChange={(e) => setEditStudentForm({ ...editStudentForm, name: e.target.value })}
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                 required
                               />
                             </div>
 
-                            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                            <div className="flex items-center justify-end gap-3 pt-3 border-t border-blue-900/60">
                               <button
                                 type="button"
                                 onClick={() => setIsEditStudentModalOpen(false)}
-                                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                                className="px-4 py-2 text-xs font-semibold text-sky-300 hover:bg-[#1a294d] rounded-xl"
                               >
                                 Batal
                               </button>
                               <button
                                 type="submit"
-                                className="px-5 py-2 text-xs font-bold bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow-md shadow-sky-500/20"
+                                className="px-5 py-2 text-xs font-bold bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl shadow-md shadow-blue-950"
                               >
                                 Simpan Perubahan
                               </button>
@@ -2664,30 +2560,30 @@
                   </div>
                 )}
 
-                {}
+                {/* NILAI HARIAN TAB */}
                 {activeTab === 'harian' && (
                   <div className="space-y-6 animate-fadeIn">
-                    <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex items-center gap-4">
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 mb-1">Pilih Kelas</label>
+                          <label className="block text-xs font-medium text-sky-200 mb-1">Pilih Kelas</label>
                           <select
                             value={selectedClass}
                             onChange={(e) => setSelectedClass(e.target.value)}
-                            className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            className="px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                           >
-                            {INITIAL_CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
+                            {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">{c}</option>)}
                           </select>
                         </div>
 
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 mb-1">Mata Pelajaran</label>
+                          <label className="block text-xs font-medium text-sky-200 mb-1">Mata Pelajaran</label>
                           <select
                             value={selectedSubject}
                             onChange={(e) => setSelectedSubject(e.target.value)}
-                            className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            className="px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                           >
-                            {GRADING_SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                            {GRADING_SUBJECTS.map(s => <option key={s} value={s} className="bg-[#0b1329] text-sky-100">{s}</option>)}
                           </select>
                         </div>
                       </div>
@@ -2703,49 +2599,49 @@
                           });
                           executePDFPrint('harian', selectedClass, selectedSubject, '', '');
                         }}
-                        className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-sky-500/20 flex items-center gap-2 self-start md:self-auto"
+                        className="px-4 py-2 bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-950 flex items-center gap-2 self-start md:self-auto"
                       >
                         <Icon name="Printer" className="w-4 h-4" /> Cetak Tugas Harian PDF
                       </button>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
+                    <div className="bg-[#111c38] rounded-2xl border border-[#a1c6ea]/30 shadow-md overflow-hidden">
                       <div className="overflow-x-auto relative max-h-[600px]">
                         <table className="w-full text-left border-collapse text-xs">
-                          <thead className="bg-slate-100 border-b border-slate-200 text-slate-700 sticky top-0 z-20">
+                          <thead className="bg-[#090f21] border-b border-blue-900 text-[#a1c6ea] sticky top-0 z-20">
                             <tr>
-                              <th className="py-3 px-4 min-w-[200px] sticky left-0 z-30 bg-slate-100 border-r border-slate-200 font-bold">
+                              <th className="py-3 px-4 min-w-[200px] sticky left-0 z-30 bg-[#090f21] border-r border-blue-900 font-bold">
                                 Nama Siswa
                               </th>
                               {Array.from({ length: 16 }, (_, i) => i + 1).map((taskNum) => {
                                 const meta = tasksMetadata[dailyGradesKey]?.[taskNum];
                                 return (
-                                  <th key={taskNum} className="py-3 px-3 text-center min-w-[95px] border-r border-slate-200">
+                                  <th key={taskNum} className="py-3 px-3 text-center min-w-[95px] border-r border-blue-900">
                                     <div className="flex items-center justify-between gap-1">
-                                      <span className="font-bold text-slate-800">Tugas {taskNum}</span>
+                                      <span className="font-bold text-sky-100">Tugas {taskNum}</span>
                                       <button
                                         onClick={() => openMetadataModal(taskNum)}
                                         title="Atur Metadata Tugas"
-                                        className="p-1 hover:bg-slate-200 rounded text-slate-500 hover:text-sky-600 transition-colors"
+                                        className="p-1 hover:bg-[#1e3466] rounded text-[#a1c6ea] transition-colors"
                                       >
                                         ⚙️
                                       </button>
                                     </div>
                                     {meta?.name && (
-                                      <p className="text-[10px] text-sky-600 font-medium truncate max-w-[80px] mt-0.5" title={meta.name}>
+                                      <p className="text-[10px] text-[#a1c6ea] font-medium truncate max-w-[80px] mt-0.5" title={meta.name}>
                                         {meta.name}
                                       </p>
                                     )}
                                   </th>
                                 );
                               })}
-                              <th className="py-3 px-4 min-w-[120px] text-center bg-sky-100 text-sky-950 font-extrabold border-l border-sky-200 shadow-xs">
+                              <th className="py-3 px-4 min-w-[120px] text-center bg-[#1e3a8a] text-sky-100 font-extrabold border-l border-blue-800 shadow-xs">
                                 Rata-Rata
                               </th>
                             </tr>
                           </thead>
 
-                          <tbody className="divide-y divide-slate-100">
+                          <tbody className="divide-y divide-blue-950">
                             {currentStudents.map((siswa) => {
                               const studentGrades = dailyGrades[dailyGradesKey]?.[siswa.id] || {};
                               const gradeValues = Object.values(studentGrades).filter(v => v !== '' && v !== null && !isNaN(v));
@@ -2754,14 +2650,14 @@
                                 : '-';
 
                               return (
-                                <tr key={siswa.id} className="hover:bg-sky-50/30 transition-colors">
-                                  <td className="py-3 px-4 font-semibold text-slate-900 sticky left-0 z-10 bg-white border-r border-slate-200 shadow-xs">
+                                <tr key={siswa.id} className="hover:bg-[#152347]/40 transition-colors">
+                                  <td className="py-3 px-4 font-semibold text-sky-50 sticky left-0 z-10 bg-[#111c38] border-r border-blue-900 shadow-xs">
                                     {siswa.name}
                                   </td>
                                   {Array.from({ length: 16 }, (_, i) => i + 1).map((taskNum) => {
                                     const currentVal = studentGrades[taskNum] ?? '';
                                     return (
-                                      <td key={taskNum} className="py-2 px-2 text-center border-r border-slate-100">
+                                      <td key={taskNum} className="py-2 px-2 text-center border-r border-blue-950">
                                         <input
                                           type="number"
                                           min="0"
@@ -2769,12 +2665,12 @@
                                           value={currentVal}
                                           onChange={(e) => handleGradeChange(siswa.id, taskNum, e.target.value)}
                                           placeholder="-"
-                                          className="w-16 py-1.5 px-1 text-center bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white"
+                                          className="w-16 py-1.5 px-1 text-center bg-[#090f21] border border-[#a1c6ea]/30 rounded-lg text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                         />
                                       </td>
                                     );
                                   })}
-                                  <td className="py-3 px-4 text-center font-bold text-sky-950 bg-sky-50/80 border-l border-sky-100 shadow-xs text-sm">
+                                  <td className="py-3 px-4 text-center font-bold text-sky-100 bg-[#090f21]/80 border-l border-blue-900 shadow-xs text-sm">
                                     {average}
                                   </td>
                                 </tr>
@@ -2786,53 +2682,53 @@
                     </div>
 
                     {metadataModal.open && (
-                      <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-                        <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-scaleUp">
-                          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 className="font-bold text-slate-900 text-base">
+                      <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+                        <div className="bg-[#111c38] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#a1c6ea]/40 space-y-5 animate-scaleUp">
+                          <div className="flex items-center justify-between border-b border-blue-900/60 pb-3">
+                            <h3 className="font-bold text-sky-50 text-base">
                               Metadata Tugas {metadataModal.taskNum} ({selectedClass})
                             </h3>
-                            <button onClick={() => setMetadataModal({ ...metadataModal, open: false })} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setMetadataModal({ ...metadataModal, open: false })} className="text-sky-300 hover:text-sky-100">
                               <Icon name="X" className="w-5 h-5" />
                             </button>
                           </div>
 
                           <div className="space-y-4">
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Nama / Penjabaran Tugas</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Nama / Penjabaran Tugas</label>
                               <input
                                 type="text"
                                 value={metadataModal.name}
                                 onChange={(e) => setMetadataModal({ ...metadataModal, name: e.target.value })}
                                 placeholder="Contoh: Logika Matematika Bab 1"
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                               />
                             </div>
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Tanggal Diberikan Tugas</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Tanggal Diberikan Tugas</label>
                               <input
                                 type="date"
                                 value={metadataModal.givenDate}
                                 onChange={(e) => setMetadataModal({ ...metadataModal, givenDate: e.target.value })}
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                               />
                             </div>
                             <div>
-                              <label className="block text-xs font-semibold text-slate-700 mb-1">Tanggal Pengumpulan (Deadline)</label>
+                              <label className="block text-xs font-semibold text-sky-200 mb-1">Tanggal Pengumpulan (Deadline)</label>
                               <input
                                 type="date"
                                 value={metadataModal.dueDate}
                                 onChange={(e) => setMetadataModal({ ...metadataModal, dueDate: e.target.value })}
-                                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                               />
                             </div>
                           </div>
 
-                          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-                            <button onClick={() => setMetadataModal({ ...metadataModal, open: false })} className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">
+                          <div className="flex items-center justify-end gap-3 pt-3 border-t border-blue-900/60">
+                            <button onClick={() => setMetadataModal({ ...metadataModal, open: false })} className="px-4 py-2 text-xs font-semibold text-sky-300 hover:bg-[#1a294d] rounded-xl">
                               Batal
                             </button>
-                            <button onClick={saveMetadataModal} className="px-5 py-2 text-xs font-bold bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow-md shadow-sky-500/30">
+                            <button onClick={saveMetadataModal} className="px-5 py-2 text-xs font-bold bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl shadow-md shadow-blue-950">
                               Simpan Metadata
                             </button>
                           </div>
@@ -2842,30 +2738,30 @@
                   </div>
                 )}
 
-                {}
+                {/* NILAI ASESMEN TAB */}
                 {activeTab === 'asesmen' && (
                   <div className="space-y-6 animate-fadeIn">
-                    <div className="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="bg-[#111c38] p-5 rounded-2xl border border-[#a1c6ea]/30 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
                       <div className="flex items-center gap-4 w-full sm:w-auto">
                         <div className="w-full sm:w-auto">
-                          <label className="block text-xs font-medium text-slate-600 mb-1">Pilih Kelas</label>
+                          <label className="block text-xs font-medium text-sky-200 mb-1">Pilih Kelas</label>
                           <select
                             value={selectedClass}
                             onChange={(e) => setSelectedClass(e.target.value)}
-                            className="w-full sm:w-auto px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            className="w-full sm:w-auto px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                           >
-                            {INITIAL_CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
+                            {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">{c}</option>)}
                           </select>
                         </div>
 
                         <div className="w-full sm:w-auto">
-                          <label className="block text-xs font-medium text-slate-600 mb-1">Mata Pelajaran</label>
+                          <label className="block text-xs font-medium text-sky-200 mb-1">Mata Pelajaran</label>
                           <select
                             value={selectedSubject}
                             onChange={(e) => setSelectedSubject(e.target.value)}
-                            className="w-full sm:w-auto px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            className="w-full sm:w-auto px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                           >
-                            {GRADING_SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                            {GRADING_SUBJECTS.map(s => <option key={s} value={s} className="bg-[#0b1329] text-sky-100">{s}</option>)}
                           </select>
                         </div>
                       </div>
@@ -2881,17 +2777,17 @@
                           });
                           executePDFPrint('asesmen', selectedClass, selectedSubject, '', '');
                         }}
-                        className="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-sky-500/20 flex items-center gap-2 self-start sm:self-auto"
+                        className="px-4 py-2 bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-950 flex items-center gap-2 self-start sm:self-auto"
                       >
                         <Icon name="Printer" className="w-4 h-4" /> Cetak Asesmen PDF
                       </button>
                     </div>
 
-                    <div className="bg-white rounded-2xl border border-sky-100 shadow-sm overflow-hidden">
+                    <div className="bg-[#111c38] rounded-2xl border border-[#a1c6ea]/30 shadow-md overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse text-xs">
                           <thead>
-                            <tr className="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider">
+                            <tr className="bg-[#090f21] border-b border-blue-900 text-[#a1c6ea] font-bold uppercase tracking-wider">
                               <th className="py-3.5 px-4 min-w-[180px]">Nama Siswa</th>
                               <th className="py-3.5 px-2 text-center w-16">F 1</th>
                               <th className="py-3.5 px-2 text-center w-16">F 2</th>
@@ -2899,15 +2795,15 @@
                               <th className="py-3.5 px-2 text-center w-16">F 4</th>
                               <th className="py-3.5 px-2 text-center w-16">F 5</th>
                               <th className="py-3.5 px-2 text-center w-16">F 6</th>
-                              <th className="py-3.5 px-3 text-center bg-amber-50 text-amber-900 border-x border-amber-200">ATS</th>
-                              <th className="py-3.5 px-3 text-center bg-blue-50 text-blue-900 border-r border-blue-200">AAS/AAT</th>
-                              <th className="py-3.5 px-4 text-center bg-sky-100 text-sky-950 font-extrabold min-w-[120px]">
+                              <th className="py-3.5 px-3 text-center bg-amber-950 text-amber-300 border-x border-amber-900">ATS</th>
+                              <th className="py-3.5 px-3 text-center bg-[#192b52] text-sky-200 border-r border-blue-900">AAS/AAT</th>
+                              <th className="py-3.5 px-4 text-center bg-[#1e3a8a] text-sky-100 font-extrabold min-w-[120px]">
                                 Nilai Akhir Rapor
                               </th>
                             </tr>
                           </thead>
 
-                          <tbody className="divide-y divide-slate-100">
+                          <tbody className="divide-y divide-blue-950">
                             {currentStudents.map((siswa) => {
                               const grades = assessmentGrades[dailyGradesKey]?.[siswa.id] || {};
                               const fVals = [grades.f1, grades.f2, grades.f3, grades.f4, grades.f5, grades.f6].filter(v => v !== '' && v !== undefined && v !== null);
@@ -2919,8 +2815,8 @@
                               const isPassed = finalGrade !== '-' && Number(finalGrade) >= 75;
 
                               return (
-                                <tr key={siswa.id} className="hover:bg-sky-50/30 transition-colors">
-                                  <td className="py-3.5 px-4 font-semibold text-slate-900">{siswa.name}</td>
+                                <tr key={siswa.id} className="hover:bg-[#152347]/40 transition-colors">
+                                  <td className="py-3.5 px-4 font-semibold text-sky-50">{siswa.name}</td>
                                   {['f1', 'f2', 'f3', 'f4', 'f5', 'f6'].map((field) => (
                                     <td key={field} className="py-2 px-1 text-center">
                                       <input
@@ -2930,11 +2826,11 @@
                                         value={grades[field] ?? ''}
                                         onChange={(e) => handleAssessmentChange(siswa.id, field, e.target.value)}
                                         placeholder="-"
-                                        className="w-12 py-1.5 px-1 text-center bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                        className="w-12 py-1.5 px-1 text-center bg-[#090f21] border border-[#a1c6ea]/30 rounded-lg text-xs font-semibold text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                       />
                                     </td>
                                   ))}
-                                  <td className="py-2 px-2 text-center bg-amber-50/40 border-x border-amber-100">
+                                  <td className="py-2 px-2 text-center bg-amber-950/30 border-x border-amber-900/60">
                                     <input
                                       type="number"
                                       min="0"
@@ -2942,10 +2838,10 @@
                                       value={grades.ats ?? ''}
                                       onChange={(e) => handleAssessmentChange(siswa.id, 'ats', e.target.value)}
                                       placeholder="-"
-                                      className="w-14 py-1.5 px-1 text-center bg-white border border-amber-300 rounded-lg text-xs font-bold text-amber-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                                      className="w-14 py-1.5 px-1 text-center bg-[#090f21] border border-amber-800 rounded-lg text-xs font-bold text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
                                     />
                                   </td>
-                                  <td className="py-2 px-2 text-center bg-blue-50/40 border-r border-blue-100">
+                                  <td className="py-2 px-2 text-center bg-[#090f21]/40 border-r border-blue-900/60">
                                     <input
                                       type="number"
                                       min="0"
@@ -2953,15 +2849,15 @@
                                       value={grades.aas ?? ''}
                                       onChange={(e) => handleAssessmentChange(siswa.id, 'aas', e.target.value)}
                                       placeholder="-"
-                                      className="w-14 py-1.5 px-1 text-center bg-white border border-blue-300 rounded-lg text-xs font-bold text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      className="w-14 py-1.5 px-1 text-center bg-[#090f21] border border-blue-800 rounded-lg text-xs font-bold text-sky-300 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                                     />
                                   </td>
-                                  <td className="py-3.5 px-4 text-center bg-sky-50/50">
+                                  <td className="py-3.5 px-4 text-center bg-[#090f21]/60">
                                     <div className="flex items-center justify-center gap-2">
-                                      <span className="text-sm font-extrabold text-sky-950">{finalGrade}</span>
+                                      <span className="text-sm font-extrabold text-sky-50">{finalGrade}</span>
                                       {finalGrade !== '-' && (
                                         <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${
-                                          isPassed ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                                          isPassed ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-rose-950 text-rose-300 border border-rose-800'
                                         }`}>
                                           {isPassed ? 'Tuntas' : 'Remidial'}
                                         </span>
@@ -2978,13 +2874,13 @@
                   </div>
                 )}
 
-                {}
+                {/* JURNAL KEGIATAN TAB */}
                 {activeTab === 'jurnal' && (
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fadeIn">
-                    <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-sky-100 shadow-sm space-y-4">
-                      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                        <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-                          <Icon name="BookOpen" className="w-5 h-5 text-sky-600" />
+                    <div className="lg:col-span-5 bg-[#111c38] p-6 rounded-2xl border border-[#a1c6ea]/30 shadow-md space-y-4">
+                      <div className="flex items-center justify-between border-b border-blue-900/60 pb-3">
+                        <h3 className="font-bold text-sky-50 text-base flex items-center gap-2">
+                          <Icon name="BookOpen" className="w-5 h-5 text-[#a1c6ea]" />
                           {journalForm.id ? 'Edit Jurnal Pembelajaran' : 'Input Jurnal Kegiatan'}
                         </h3>
                         {journalForm.id && (
@@ -2992,7 +2888,7 @@
                             onClick={() => setJournalForm({
                               id: null, classRoom: selectedClass, period: selectedPeriod, subject: selectedSubject, date: selectedDate, content: '', notes: ''
                             })}
-                            className="text-xs font-semibold text-rose-500 hover:underline"
+                            className="text-xs font-semibold text-sky-300 hover:underline"
                           >
                             Batal Edit
                           </button>
@@ -3001,59 +2897,69 @@
 
                       <form onSubmit={handleSaveJournal} className="space-y-4">
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">Tanggal</label>
+                          <label className="block text-xs font-semibold text-sky-200 mb-1">Tanggal</label>
                           <input
                             type="date"
                             value={journalForm.date}
                             onChange={(e) => setJournalForm({ ...journalForm, date: e.target.value })}
-                            className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                             required
                           />
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs font-semibold text-slate-700 mb-1">Pilih Kelas</label>
+                            <label className="block text-xs font-semibold text-sky-200 mb-1">Pilih Kelas</label>
                             <select
                               value={journalForm.classRoom}
                               onChange={(e) => setJournalForm({ ...journalForm, classRoom: e.target.value })}
-                              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                              className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                             >
-                              {INITIAL_CLASSES.map(c => <option key={c} value={c}>{c}</option>)}
+                              {INITIAL_CLASSES.map(c => <option key={c} value={c} className="bg-[#0b1329] text-sky-100">{c}</option>)}
                             </select>
                           </div>
 
                           <div>
-                            <label className="block text-xs font-semibold text-slate-700 mb-1">Mata Pelajaran</label>
+                            <label className="block text-xs font-semibold text-sky-200 mb-1">Mata Pelajaran</label>
                             <select
                               value={journalForm.subject}
                               onChange={(e) => setJournalForm({ ...journalForm, subject: e.target.value })}
-                              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                              className="w-full px-3 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                             >
-                              <option value="Matematika">Matematika</option>
-                              <option value="Informatika">Informatika</option>
-                              <option value="Pembinaan Wali Kelas">Pembinaan Wali Kelas</option>
+                              <option value="Matematika" className="bg-[#0b1329] text-sky-100">Matematika</option>
+                              <option value="Informatika" className="bg-[#0b1329] text-sky-100">Informatika</option>
+                              <option value="Pembinaan Wali Kelas" className="bg-[#0b1329] text-sky-100">Pembinaan Wali Kelas</option>
                             </select>
                           </div>
                         </div>
 
-                        <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">Jam Pelajaran Ke-</label>
-                          <select
-                            value={journalForm.period}
-                            onChange={(e) => setJournalForm({ ...journalForm, period: e.target.value })}
-                            className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
-                          >
-                            <option value="07.30 - 08.00">07.30 - 08.00</option>
-                            <option value="08.00 - 09.20">08.00 - 09.20</option>
-                            <option value="09.50 - 11.10">09.50 - 11.10</option>
-                            <option value="10.20 - 11.40">10.20 - 11.40</option>
-                            <option value="12.30 - 13.30">12.30 - 13.30</option>
-                          </select>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-semibold text-sky-200 mb-1">Jam Mulai *</label>
+                            <input
+                              type="text"
+                              value={journalForm.startTime || ''}
+                              onChange={(e) => setJournalForm({ ...journalForm, startTime: e.target.value })}
+                              placeholder="Misal: 08.00"
+                              className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 placeholder-sky-400/50 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-sky-200 mb-1">Jam Selesai *</label>
+                            <input
+                              type="text"
+                              value={journalForm.endTime || ''}
+                              onChange={(e) => setJournalForm({ ...journalForm, endTime: e.target.value })}
+                              placeholder="Misal: 09.20"
+                              className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 placeholder-sky-400/50 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
+                              required
+                            />
+                          </div>
                         </div>
 
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">
+                          <label className="block text-xs font-semibold text-sky-200 mb-1">
                             Uraian & Rincian Kegiatan Pembelajaran *
                           </label>
                           <textarea
@@ -3061,12 +2967,12 @@
                             value={journalForm.content}
                             onChange={(e) => setJournalForm({ ...journalForm, content: e.target.value })}
                             placeholder="Tuliskan ringkasan materi, misalnya: Konsep Himpunan, Bilangan Rasional..."
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            className="w-full px-3.5 py-2.5 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 placeholder-sky-400/50 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">
+                          <label className="block text-xs font-semibold text-sky-200 mb-1">
                             Catatan Kejadian Khusus / Keterangan Kelas
                           </label>
                           <textarea
@@ -3074,13 +2980,13 @@
                             value={journalForm.notes}
                             onChange={(e) => setJournalForm({ ...journalForm, notes: e.target.value })}
                             placeholder="Misal: Hambatan kelas, kedisiplinan siswa..."
-                            className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            className="w-full px-3.5 py-2 bg-[#090f21] border border-[#a1c6ea]/30 rounded-xl text-xs font-medium text-sky-100 placeholder-sky-400/50 focus:outline-none focus:ring-2 focus:ring-[#a1c6ea]"
                           />
                         </div>
 
                         <button
                           type="submit"
-                          className="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-sky-500/30 flex items-center justify-center gap-2"
+                          className="w-full py-3 bg-[#a1c6ea] text-[#0b1329] hover:bg-[#8bb7e2] rounded-xl text-xs font-bold transition-all shadow-lg shadow-blue-950 flex items-center justify-center gap-2"
                         >
                           <Icon name="Save" className="w-4 h-4" />
                           {journalForm.id ? 'Perbarui Jurnal' : 'Simpan Jurnal Pembelajaran'}
@@ -3088,9 +2994,9 @@
                       </form>
                     </div>
 
-                    <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-sky-100 shadow-sm space-y-4">
-                      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                        <h3 className="font-bold text-slate-900 text-base">Riwayat Jurnal Mengajar</h3>
+                    <div className="lg:col-span-7 bg-[#111c38] p-6 rounded-2xl border border-[#a1c6ea]/30 shadow-md space-y-4">
+                      <div className="flex items-center justify-between border-b border-blue-900/60 pb-3">
+                        <h3 className="font-bold text-sky-50 text-base">Riwayat Jurnal Mengajar</h3>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => {
@@ -3103,11 +3009,11 @@
                               });
                               setIsPrintModalOpen(true);
                             }}
-                            className="px-3 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 rounded-lg text-xs font-semibold flex items-center gap-1"
+                            className="px-3 py-1 bg-[#090f21] hover:bg-[#152347] text-[#a1c6ea] border border-[#a1c6ea]/40 rounded-lg text-xs font-semibold flex items-center gap-1"
                           >
-                            <Icon name="Printer" className="w-3.5 h-3.5" /> Cetak Jurnal
+                            <Icon name="Printer" className="w-3.5 h-3.5 text-[#a1c6ea]" /> Cetak Jurnal
                           </button>
-                          <span className="text-xs font-semibold text-slate-500 bg-sky-50 px-2.5 py-1 rounded-lg border border-sky-100">
+                          <span className="text-xs font-semibold text-sky-200 bg-[#090f21] px-2.5 py-1 rounded-lg border border-[#a1c6ea]/30">
                             Total: {journals.length}
                           </span>
                         </div>
@@ -3115,34 +3021,34 @@
 
                       <div className="space-y-4">
                         {journals.length === 0 ? (
-                          <div className="text-center py-12 text-slate-400 text-xs">
+                          <div className="text-center py-12 text-sky-400/60 text-xs">
                             Belum ada data jurnal pembelajaran yang diinput.
                           </div>
                         ) : (
                           journals.map((j) => (
-                            <div key={j.id} className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-sky-50/30 transition-all space-y-2 relative group">
+                            <div key={j.id} className="p-4 rounded-xl border border-blue-900/60 bg-[#090f21] hover:bg-[#152347]/40 transition-all space-y-2 relative group">
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                  <span className="px-2.5 py-0.5 bg-blue-100 text-blue-800 font-bold text-xs rounded-md">
+                                  <span className="px-2.5 py-0.5 bg-[#0b1329] text-[#a1c6ea] font-bold text-xs rounded-md border border-[#a1c6ea]/30">
                                     {j.classRoom}
                                   </span>
-                                  <span className="text-xs font-bold text-slate-800">{j.subject}</span>
-                                  <span className="text-[11px] text-slate-400">• {j.period}</span>
+                                  <span className="text-xs font-bold text-sky-50">{j.subject}</span>
+                                  <span className="text-[11px] text-sky-300/80">• {j.period}</span>
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                  <span className="text-[11px] text-slate-500 font-medium">{j.date}</span>
-                                  <button onClick={() => handleEditJournal(j)} className="p-1.5 text-slate-400 hover:text-sky-600 rounded-lg hover:bg-sky-50">
+                                  <span className="text-[11px] text-sky-300/80 font-medium">{j.date}</span>
+                                  <button onClick={() => handleEditJournal(j)} className="p-1.5 text-sky-300 hover:text-sky-100 rounded-lg hover:bg-[#152347]">
                                     <Icon name="Edit2" className="w-3.5 h-3.5" />
                                   </button>
-                                  <button onClick={() => handleDeleteJournal(j.id)} className="p-1.5 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-rose-50">
+                                  <button onClick={() => handleDeleteJournal(j.id)} className="p-1.5 text-rose-400 hover:text-rose-100 rounded-lg hover:bg-rose-950">
                                     <Icon name="Trash2" className="w-3.5 h-3.5" />
                                   </button>
                                 </div>
                               </div>
-                              <p className="text-xs text-slate-700 font-normal leading-relaxed">{j.content}</p>
+                              <p className="text-xs text-sky-100 font-normal leading-relaxed">{j.content}</p>
                               {j.notes && (
-                                <div className="text-[11px] bg-amber-50/80 text-amber-900 p-2 rounded-lg border border-amber-200/60 font-medium">
+                                <div className="text-[11px] bg-amber-950/80 text-amber-200 p-2 rounded-lg border border-amber-900/60 font-medium">
                                   <strong>Catatan:</strong> {j.notes}
                                 </div>
                               )}
@@ -3156,14 +3062,14 @@
 
               </main>
 
-              {/* WEBSITE FOOTER */}
-              <footer className="py-5 px-6 border-t border-sky-100/80 bg-white/60 backdrop-blur-sm text-center text-xs text-slate-500 mt-auto">
+              {/* Footer */}
+              <footer className="py-5 px-6 border-t border-[#a1c6ea]/20 bg-[#090f21] text-center text-xs text-sky-300 mt-auto">
                 <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-                  <p className="font-medium text-slate-600">
-                    EduTeach Pro &copy; {new Date().getFullYear()} — Dashboard Guru Terpadu
+                  <p className="font-medium text-sky-200">
+                    EduTeach Pro &copy; {new Date().getFullYear()} — Dashboard Guru Terpadu SMP YPU Bandung
                   </p>
-                  <p className="text-slate-500 font-medium">
-                    Created & Maintained by <span className="font-bold text-sky-600">@ihsanmsyahid</span>
+                  <p className="text-sky-300 font-medium">
+                    Designed & Developed by <span className="font-bold text-[#a1c6ea]">@ihsanmsyahid</span>
                   </p>
                 </div>
               </footer>
