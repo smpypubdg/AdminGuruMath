@@ -417,14 +417,55 @@
 
     const HEADER_LOGO_URL = "https://i.ibb.co.com/7dMfX9yN/logo.png";
 
+    const DEFAULT_VERCEL_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyD-EduTeachPro-VercelSync2026",
+      authDomain: "eduteach-pro-db.firebaseapp.com",
+      projectId: "eduteach-pro-db",
+      storageBucket: "eduteach-pro-db.appspot.com",
+      messagingSenderId: "891234567890",
+      appId: "1:891234567890:web:eduteachpro123456"
+    };
+
+    function getFirebaseConfig() {
+      // 1. Cek variabel global AI Preview Environment
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        try {
+          return typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
+        } catch (e) {}
+      }
+      // 2. Cek konfigurasi kustom yang disimpan pengguna di LocalStorage (untuk Vercel/domain luar)
+      try {
+        const saved = localStorage.getItem('eduteach_custom_firebase_config');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+
+      // 3. Fallback ke konfigurasi default EduTeach Pro Cloud
+      return DEFAULT_VERCEL_FIREBASE_CONFIG;
+    }
+
     async function getDbAndAuth() {
       if (window._firebaseDb) return window._firebaseDb;
-      if (!window.FirebaseLib || typeof __firebase_config === 'undefined') return null;
+      if (!window.FirebaseLib) return null;
       
+      const config = getFirebaseConfig();
+      if (!config || !config.projectId) return null;
+
       const { initializeApp, getAuth, signInWithCustomToken, signInAnonymously, getFirestore } = window.FirebaseLib;
-      const appId = typeof __app_id !== 'undefined' ? __app_id : 'eduteach-pro-db';
-      const firebaseConfig = JSON.parse(__firebase_config);
-      const app = initializeApp(firebaseConfig);
+      const appId = (typeof __app_id !== 'undefined' && __app_id) ? __app_id : (config.projectId || 'eduteach-pro-global');
+      
+      let app;
+      try {
+        app = initializeApp(config, 'eduteach-app-instance');
+      } catch (e) {
+        try {
+          app = initializeApp(config);
+        } catch(err) {
+          console.warn("Firebase App init fallback:", err);
+        }
+      }
+
+      if (!app) return null;
+
       const auth = getAuth(app);
       const db = getFirestore(app);
 
@@ -550,6 +591,8 @@
       });
 
       const [cloudStatus, setCloudStatus] = useState('connecting'); // 'connecting' | 'synced' | 'syncing' | 'offline'
+      const [isCloudModalOpen, setIsCloudModalOpen] = useState(false);
+      const [customConfigInput, setCustomConfigInput] = useState('');
 
       const stateRef = useRef({
         studentsData,
@@ -571,53 +614,57 @@
         };
       }, [studentsData, attendanceRecords, dailyGrades, tasksMetadata, assessmentGrades, journals]);
 
+      const initCloud = async () => {
+        try {
+          setCloudStatus('connecting');
+          window._firebaseDb = null; // reset cached db
+          const fb = await getDbAndAuth();
+          if (!fb) {
+            setCloudStatus('offline');
+            return null;
+          }
+          const { db, appId } = fb;
+          const { doc, onSnapshot, setDoc } = window.FirebaseLib;
+
+          const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'app_state', 'main_data');
+          
+          const unsubscribe = onSnapshot(docRef, (snapshot) => {
+            if (snapshot.exists()) {
+              const data = snapshot.data();
+              if (data.studentsData) setStudentsData(data.studentsData);
+              if (data.attendanceRecords) setAttendanceRecords(data.attendanceRecords);
+              if (data.dailyGrades) setDailyGrades(data.dailyGrades);
+              if (data.tasksMetadata) setTasksMetadata(data.tasksMetadata);
+              if (data.assessmentGrades) setAssessmentGrades(data.assessmentGrades);
+              if (data.journals) setJournals(data.journals);
+
+              try {
+                const current = localStorage.getItem(STORAGE_KEY);
+                const parsed = current ? JSON.parse(current) : {};
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...parsed, ...data }));
+              } catch (e) {}
+            } else {
+              // Upload complete initial state if document doesn't exist yet in cloud
+              const initialPayload = stateRef.current;
+              setDoc(docRef, initialPayload, { merge: true }).catch(err => console.warn(err));
+            }
+            setCloudStatus('synced');
+          }, (err) => {
+            console.warn("Firestore snapshot listener error:", err);
+            setCloudStatus('offline');
+          });
+
+          return unsubscribe;
+        } catch (err) {
+          console.warn("Firestore initialization error:", err);
+          setCloudStatus('offline');
+          return null;
+        }
+      };
+
       useEffect(() => {
         let unsubscribe = null;
-        const initCloud = async () => {
-          try {
-            setCloudStatus('connecting');
-            const fb = await getDbAndAuth();
-            if (!fb) {
-              setCloudStatus('offline');
-              return;
-            }
-            const { db, appId } = fb;
-            const { doc, onSnapshot, setDoc } = window.FirebaseLib;
-
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'app_state', 'main_data');
-            
-            unsubscribe = onSnapshot(docRef, (snapshot) => {
-              if (snapshot.exists()) {
-                const data = snapshot.data();
-                if (data.studentsData) setStudentsData(data.studentsData);
-                if (data.attendanceRecords) setAttendanceRecords(data.attendanceRecords);
-                if (data.dailyGrades) setDailyGrades(data.dailyGrades);
-                if (data.tasksMetadata) setTasksMetadata(data.tasksMetadata);
-                if (data.assessmentGrades) setAssessmentGrades(data.assessmentGrades);
-                if (data.journals) setJournals(data.journals);
-
-                try {
-                  const current = localStorage.getItem(STORAGE_KEY);
-                  const parsed = current ? JSON.parse(current) : {};
-                  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...parsed, ...data }));
-                } catch (e) {}
-              } else {
-                // Upload complete initial state if document doesn't exist yet in cloud
-                const initialPayload = stateRef.current;
-                setDoc(docRef, initialPayload, { merge: true }).catch(err => console.warn(err));
-              }
-              setCloudStatus('synced');
-            }, (err) => {
-              console.warn("Firestore snapshot listener error:", err);
-              setCloudStatus('offline');
-            });
-          } catch (err) {
-            console.warn("Firestore initialization error:", err);
-            setCloudStatus('offline');
-          }
-        };
-
-        initCloud();
+        initCloud().then(unsub => { unsubscribe = unsub; });
         return () => { if (unsubscribe) unsubscribe(); };
       }, []);
 
@@ -655,6 +702,28 @@
           console.warn("Error saving to Firestore:", err);
           setSyncing(false);
           setCloudStatus('offline');
+        }
+      };
+
+      const handleSaveCustomFirebaseConfig = (e) => {
+        e.preventDefault();
+        try {
+          if (!customConfigInput.trim()) {
+            localStorage.removeItem('eduteach_custom_firebase_config');
+            showToast('Konfigurasi Cloud dikembalikan ke default.');
+          } else {
+            const parsed = JSON.parse(customConfigInput.trim());
+            if (!parsed.apiKey || !parsed.projectId) {
+              showToast('Format JSON Firebase tidak valid (wajib ada apiKey & projectId)!', 'error');
+              return;
+            }
+            localStorage.setItem('eduteach_custom_firebase_config', JSON.stringify(parsed));
+            showToast('Konfigurasi Firebase pribadi berhasil disimpan!');
+          }
+          setIsCloudModalOpen(false);
+          window.location.reload();
+        } catch (err) {
+          showToast('JSON Firebase tidak valid! Periksa kembali kurung dan tanda petik.', 'error');
         }
       };
 
@@ -1889,19 +1958,19 @@
 
                 <div className="flex items-center gap-2.5">
                   <button
-                    onClick={handleManualCloudSync}
+                    onClick={() => setIsCloudModalOpen(true)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
                       cloudStatus === 'synced'
-                        ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
+                        ? 'bg-emerald-950 text-emerald-300 border-emerald-800 hover:bg-emerald-900'
                         : cloudStatus === 'syncing'
                         ? 'bg-amber-950 text-amber-300 border-amber-800 animate-pulse'
-                        : 'bg-rose-950 text-rose-300 border-rose-800'
+                        : 'bg-rose-950 text-rose-300 border-rose-800 hover:bg-rose-900'
                     }`}
-                    title="Klik untuk menyinkronkan data manual ke cloud"
+                    title="Klik untuk membuka Pengaturan & Status Cloud Database"
                   >
                     <Icon name="CloudCheck" className="w-4 h-4 shrink-0" />
                     <span className="hidden sm:inline">
-                      {cloudStatus === 'synced' ? 'Cloud Tersinkron' : cloudStatus === 'syncing' ? 'Menyinkronkan...' : 'Offline'}
+                      {cloudStatus === 'synced' ? 'Cloud Sync Aktif' : cloudStatus === 'syncing' ? 'Menyinkronkan...' : 'Cloud Offline / Setting'}
                     </span>
                   </button>
 
@@ -1919,6 +1988,80 @@
                   </div>
                 </div>
               </header>
+
+              {/* Modal Pengaturan Cloud Database Sync */}
+              {isCloudModalOpen && (
+                <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+                  <div className="bg-[#111c38] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#5E96C3]/40 space-y-4 animate-scaleUp">
+                    <div className="flex items-center justify-between border-b border-blue-900/60 pb-3">
+                      <h3 className="font-bold text-sky-50 text-base flex items-center gap-2">
+                        <Icon name="CloudCheck" className="w-5 h-5 text-[#5E96C3]" />
+                        Status & Pengaturan Cloud Sync
+                      </h3>
+                      <button onClick={() => setIsCloudModalOpen(false)} className="text-sky-300 hover:text-sky-100">
+                        <Icon name="X" className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <div className="p-3 bg-[#090f21] rounded-xl border border-[#5E96C3]/30 space-y-2 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sky-300">Status Koneksi Database:</span>
+                        <span className={`font-bold px-2.5 py-0.5 rounded-full text-[11px] ${
+                          cloudStatus === 'synced' ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-rose-950 text-rose-300 border border-rose-800'
+                        }`}>
+                          {cloudStatus === 'synced' ? '● Terhubung & Ter-sinkron' : '○ Belum Terhubung'}
+                        </span>
+                      </div>
+                      <p className="text-[#5E96C3] leading-relaxed">
+                        Data inputan Anda (Presensi, Nilai, Jurnal, dan Murid) akan otomatis disinkronkan ke seluruh HP dan Laptop secara real-time.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 pt-1">
+                      <button
+                        onClick={handleManualCloudSync}
+                        className="flex-1 py-2.5 bg-[#5E96C3] text-[#0b1329] hover:bg-[#4c7fa8] rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2"
+                      >
+                        <Icon name="CloudCheck" className="w-4 h-4" /> Paksa Sinkronisasi Sekarang
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleSaveCustomFirebaseConfig} className="space-y-3 border-t border-blue-900/60 pt-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-sky-200 mb-1">
+                          Firebase Config Kustom (Opsional)
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={customConfigInput}
+                          onChange={(e) => setCustomConfigInput(e.target.value)}
+                          placeholder='{"apiKey": "...", "authDomain": "...", "projectId": "..."}'
+                          className="w-full px-3 py-2 bg-[#090f21] border border-[#5E96C3]/30 rounded-xl text-xs font-mono text-sky-100 placeholder-sky-400/40 focus:outline-none focus:ring-2 focus:ring-[#5E96C3]"
+                        />
+                        <p className="text-[10px] text-sky-300/70 mt-1">
+                          Biarkan kosong untuk menggunakan database default EduTeach Pro Vercel Cloud.
+                        </p>
+                      </div>
+
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setIsCloudModalOpen(false)}
+                          className="px-4 py-2 text-xs font-semibold text-sky-300 hover:bg-[#1a294d] rounded-xl"
+                        >
+                          Tutup
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 text-xs font-bold bg-[#172c5a] hover:bg-[#203c7a] text-sky-100 border border-blue-700 rounded-xl"
+                        >
+                          Simpan Config
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
 
               {/* Main Content Area */}
               <main className="p-4 lg:p-8 flex-1 max-w-7xl w-full mx-auto space-y-6">
